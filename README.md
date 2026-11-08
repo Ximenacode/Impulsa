@@ -9,7 +9,7 @@
 
 **Impulsa** es un prototipo de aplicación web orientada a asesores de negocios y microfinanzas que atienden a pequeños emprendedores (bodegas, panaderías, talleres, ferreterías, etc.).
 
-Su propósito es resolver una necesidad cotidiana: **organizar contactos dispersos y transformar el interés de un cliente potencial en una próxima acción concreta.**
+Su propósito es resolver una necesidad comercial cotidiana: **organizar contactos dispersos y transformar el interés de un cliente potencial en una próxima acción concreta.**
 
 > *“Organiza tus contactos y convierte el interés en una próxima acción.”*
 
@@ -46,12 +46,32 @@ Un asesor suele recopilar prospectos en visitas a campo, ferias o por recomendac
 
 ---
 
+## 🎨 Sistema y Dirección Visual
+
+El rediseño visual de Impulsa se construyó bajo un enfoque **elegante, cercano y contemporáneo**, con composición equilibrada y detalles cuidados:
+
+- **Paleta de Color:**
+  - Verde petróleo principal: `#145965` (marca, botones principales, foco visible).
+  - Verde petróleo oscuro: `#103E46` (estados hover y active).
+  - Fondo general: `#F5F7F8` (superficie base luminosa y descansada).
+  - Superficies: `#FFFFFF` (tarjetas, paneles y modales).
+  - Texto principal: `#172B35` (contraste óptimo 13:1).
+  - Texto secundario: `#526571` (subtítulos y metadatos, contraste 5.3:1).
+  - Bordes suaves: `#DFE7EB` (delimitadores sutiles).
+  - Acento cálido: `#E5AF63` (utilizado con moderación en estados clave).
+- **Tipografía:** Familia **Inter** con escala jerárquica clara (Display, H1, H2, H3, Body y Micro).
+- **Identidad de Marca:** Emblema geométrico sutil y etiqueta interactiva **"Demo"** con diálogo explicativo accesible (se retiró la franja invasiva superior).
+- **Botones deduplicados:** Una sola acción primaria visible por pantalla (*"Nuevo contacto"*), situada de manera predecible en el encabezado de cada sección.
+- **Controles secundarios:** La acción *"Restablecer demo"* se reubicó en la parte inferior de la barra lateral, conservando su diálogo de confirmación.
+
+---
+
 ## 🛠️ Alcance de mi Participación en UX/UI
 
 *Este apartado define el rol y los puntos clave para revisión y ajuste personal:*
 - **Definición de hipótesis y enfoque:** Planteamiento del problema comercial y delimitación de supuestos.
 - **Estructuración del flujo:** Diseño del recorrido principal (Mi día → Captura rápida → Detalle contextualizado → Registro de interacción).
-- **Decisiones de interfaz y accesibilidad:** Jerarquía visual, contraste cromático (verde petróleo institucional con fondo claro), formularios con etiquetas visibles y navegación operable por teclado.
+- **Decisiones de interfaz y accesibilidad:** Jerarquía visual, contraste cromático institucional, formularios con etiquetas visibles, navegación operable por teclado y adaptación móvil táctil (mínimo 44 px).
 - **Preparación de instrumentos de prueba:** Diseño del guion de pruebas de usabilidad y de la matriz de evaluación para futuras sesiones con usuarios reales.
 - **Revisión y personalización:** Ajuste continuo del código y los flujos generados con asistencia de IA para adecuarlos a mis criterios de diseño.
 
@@ -61,59 +81,62 @@ Un asesor suele recopilar prospectos en visitas a campo, ferias o por recomendac
 
 Puedes consultar el desglose detallado del proceso en los siguientes documentos:
 
-1. [**Problema y Alcance**](docs/problema-y-alcance.md): Justificación del problema comercial, objetivos, alcance de la versión 1.0 y limitaciones.
+1. [**Problema y Alcance**](docs/problema-y-alcance.md): Justificación del problema comercial, objetivos, alcance real de la versión 1.0 y limitaciones.
 2. [**Perfil de Usuario y Supuestos**](docs/usuario-y-supuestos.md): Proto-persona de asesor comercial, escenario ilustrativo y matriz de supuestos pendientes de validar.
 3. [**Flujo Principal de Usuario**](docs/flujo-principal.md): Diagrama en Mermaid y descripción paso a paso del ciclo de captación y seguimiento.
-4. [**Decisiones de Diseño y Accesibilidad**](docs/decisiones-de-diseno.md): Fundamentación de paleta de colores, arquitectura, formularios sin trampas y cumplimiento WCAG AA.
+4. [**Decisiones de Diseño y Accesibilidad**](docs/decisiones-de-diseno.md): Sistema visual completo, tokens, razones de cambios, accesibilidad WCAG AA y wireframes esquemáticos.
 5. [**Plan y Guion de Pruebas de Usabilidad**](docs/plan-de-prueba.md): Guion estructurado con 5 tareas clave y plantilla de registro en blanco para moderador.
-6. [**Resultados y Mejoras Pendientes**](docs/resultados-y-mejoras.md): Estructura formal lista para consolidar métricas y retroalimentación una vez ejecutadas las pruebas reales.
+6. [**Resultados y Mejoras Pendientes**](docs/resultados-y-mejoras.md): Comprobaciones técnicas ejecutadas, cambios de rediseño y aspectos pendientes de validar con usuarios.
 
 ---
 
 ## 💻 Tecnologías Utilizadas
 
-- **React 19** con **TypeScript**
-- **Vite** para desarrollo y empaquetado rápido
-- **Tailwind CSS** para un sistema de diseño modular y tokens accesibles
-- **Lucide React** para iconografía semántica
+- **React 19** con **TypeScript** (tipado estricto `noUnusedLocals`, `strict: true`)
+- **Vite** para desarrollo y empaquetado rápido (con ruta base relativa para despliegue directo en GitHub Pages)
+- **Tailwind CSS** con tokens de diseño personalizados
+- **Lucide React** para iconografía semántica consistente
 - **Almacenamiento:** `localStorage` del navegador (sin backend externo)
 
 ---
 
-## ✨ Funcionalidades Principales
+## ✨ Funcionalidades Implementadas
 
-1. **Pantalla "Mi día":**
-   - Resumen numérico inmediato: Vencidos (alerta sutil), Para hoy y Próximos.
-   - Lista priorizada algorítmicamente (lo vencido primero para recuperar contacto).
-   - Botón directo *“Registrar seguimiento”* en cada tarjeta pendiente.
+1. **Pantalla "Mi día" (Centro de trabajo):**
+   - Fecha actual en español en el encabezado.
+   - Resumen cuantitativo compacto con superficies neutras: *Vencidos*, *Para hoy* y *Próximos días*.
+   - Secciones priorizadas con contadores: *Requieren atención*, *Para hoy* y *Próximos seguimientos*.
+   - Tarjetas de contacto rediseñadas con iniciales en avatar, bloque destacado de *Próxima acción* y botón directo *“Registrar seguimiento”*.
+   - Tratamiento de vencidos con tono vino/rojo suave en la etiqueta temporal (`Hace 2 días`), evitando fondos rojos extensos.
 2. **Directorio de Contactos:**
-   - Búsqueda en tiempo real por nombre de persona o nombre del negocio.
-   - Filtros combinados por etapa comercial y canal de origen (visita, referido, campaña).
-   - Acceso inmediato a la ficha completa de cada contacto.
+   - Búsqueda en tiempo real por nombre de contacto o nombre del negocio.
+   - Filtros ordenados por etapa comercial y canal de origen (visita, referido, campaña).
+   - Tabla estructurada legible en escritorio y presentación en tarjetas apiladas en móvil.
 3. **Ficha de Detalle del Contacto:**
-   - Separación visual nítida entre la **próxima acción pendiente** (futuro) y el **historial cronológico** de conversaciones (pasado).
+   - Separación visual nítida en 3 bloques: Información general, **Próxima acción pendiente** (futuro) e **Historial de conversaciones** (pasado).
    - Edición rápida de datos generales y cambio accesible de etapa comercial.
-   - Capacidad de marcar un seguimiento como atendido o reprogramarlo.
+   - Capacidad de marcar un seguimiento como atendido, reprogramarlo o registrar una nueva nota.
 4. **Tablero de Oportunidades:**
-   - Columnas para las 5 etapas: *Nuevo*, *Contactado*, *Interesado*, *Cerrado con venta*, *Cerrado sin venta*.
-   - Selector accesible en cada tarjeta para mover de etapa con teclado o pantalla táctil (sin depender exclusivamente de arrastrar y soltar).
-   - Al cerrar sin venta: campo opcional para registrar motivo de pérdida.
+   - Cinco etapas comerciales: *Nuevo*, *Contactado*, *Interesado*, *Cerrado con venta*, *Cerrado sin venta*.
+   - Tablero de 5 columnas en escritorio y **selector de etapa adaptable en móvil** para evitar desplazamiento horizontal excesivo.
+   - Al cerrar sin venta: registro opcional del motivo de descarte.
    - Al cerrar con seguimiento pendiente: confirmación guiada para completar o conservar el recordatorio.
 5. **Panel de Resultados y Conversión:**
-   - Métricas de demostración: Total de prospectos, Cierres con venta, Oportunidades por etapa y por origen.
-   - Cálculo automático de la **Tasa de Conversión**: `(Cerrados con venta / Total) × 100` con protección ante división entre cero.
+   - Métricas de demostración: Total de prospectos, Cierres con venta y Tasa de Conversión `(Cerrados con venta / Total) × 100`.
+   - Barras de progreso simples para comparar distribución por etapa y origen.
+   - Identificación explícita de datos como demostrativos.
 6. **Manejo de Datos y Resiliencia:**
-   - 8 contactos ficticios con fechas calibradas automáticamente al día de uso.
-   - Fechas calculadas en formato local ISO (`YYYY-MM-DD`) para prevenir desfases de día por zonas horarias.
-   - Botón de confirmación para **Restablecer datos de demostración** en cualquier momento.
+   - 8 contactos iniciales con fechas relativas dinámicas al día actual.
+   - Manejo seguro de fechas en formato ISO local (`YYYY-MM-DD`) para prevenir desfases de zona horaria UTC.
+   - Botón de confirmación para **Restablecer datos de demostración**.
 
 ---
 
 ## ⚠️ Limitaciones y Manejo de Datos
 
 - **Datos 100% ficticios:** Ningún contacto, teléfono o negocio corresponde a personas reales.
-- **Almacenamiento local exclusivo:** Todos los datos se almacenan en el `localStorage` del navegador del usuario. No se transmiten a servidores externos ni son aptos para datos bancarios, documentos de identidad o información sensible.
-- **Relación 1 a 1:** Cada contacto posee una única oportunidad comercial activa en esta primera versión simplificada.
+- **Almacenamiento local exclusivo:** Todos los datos se almacenan en el `localStorage` del navegador. No se transmiten a servidores externos ni son aptos para datos bancarios, documentos de identidad o información sensible.
+- **Relación 1 a 1:** Cada contacto posee una única oportunidad comercial activa en esta primera versión.
 
 ---
 
@@ -158,8 +181,10 @@ En cumplimiento con las buenas prácticas de transparencia académica y profesio
 
 ## 📸 Capturas de Pantalla y Enlace a Demo
 
-- **Demo interactiva:** *(Espacio reservado: añadir enlace a GitHub Pages o Vercel al publicar)*
-- **Captura 1 — Pantalla "Mi día":** *(Espacio reservado para imagen)*
-- **Captura 2 — Ficha de Detalle de Contacto:** *(Espacio reservado para imagen)*
-- **Captura 3 — Tablero de Oportunidades:** *(Espacio reservado para imagen)*
-- **Captura 4 — Vista móvil responsiva:** *(Espacio reservado para imagen)*
+> *Espacios reservados para añadir los enlaces finales tras la publicación:*
+
+- **Demo interactiva:** `[Ver demostración en línea](https://<TU_USUARIO>.github.io/impulsa/)` *(Reemplazar con el enlace de GitHub Pages o Vercel)*
+- **Captura 1 — Pantalla "Mi día":** `![Mi día - Impulsa](docs/screenshots/mi-dia.png)` *(Colocar imagen en `docs/screenshots/mi-dia.png`)*
+- **Captura 2 — Detalle del Contacto:** `![Detalle del Contacto](docs/screenshots/detalle-contacto.png)` *(Colocar imagen en `docs/screenshots/detalle-contacto.png`)*
+- **Captura 3 — Directorio de Contactos:** `![Directorio de Contactos](docs/screenshots/contactos-tabla.png)` *(Colocar imagen en `docs/screenshots/contactos-tabla.png`)*
+- **Captura 4 — Tablero de Oportunidades:** `![Tablero de Oportunidades](docs/screenshots/oportunidades.png)` *(Colocar imagen en `docs/screenshots/oportunidades.png`)*

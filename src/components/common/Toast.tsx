@@ -21,31 +21,31 @@ export const ToastContainer: React.FC = () => {
             key={toast.id}
             role="status"
             aria-live="polite"
-            className={`pointer-events-auto flex items-start gap-3 p-3.5 rounded-lg border shadow-md transition-all duration-200 bg-white ${
+            className={`pointer-events-auto flex items-start gap-3 p-3.5 rounded-tarjeta border shadow-elevada transition-all duration-200 bg-superficie ${
               isExito
-                ? 'border-emerald-300 text-slate-800'
+                ? 'border-estado-ganadoBorder text-texto-principal'
                 : isAdvertencia
-                ? 'border-amber-300 text-slate-800'
-                : 'border-slate-300 text-slate-800'
+                ? 'border-acento-calidoBorder text-texto-principal'
+                : 'border-borde-suave text-texto-principal'
             }`}
           >
             <div className="shrink-0 mt-0.5">
-              {isExito && <CheckCircle2 className="w-5 h-5 text-emerald-600" aria-hidden="true" />}
-              {isAdvertencia && <AlertCircle className="w-5 h-5 text-amber-600" aria-hidden="true" />}
-              {!isExito && !isAdvertencia && <Info className="w-5 h-5 text-petroleo-700" aria-hidden="true" />}
+              {isExito && <CheckCircle2 className="w-4 h-4 text-estado-ganadoText" aria-hidden="true" />}
+              {isAdvertencia && <AlertCircle className="w-4 h-4 text-[#8C5D19]" aria-hidden="true" />}
+              {!isExito && !isAdvertencia && <Info className="w-4 h-4 text-petroleo-700" aria-hidden="true" />}
             </div>
 
-            <p className="text-sm font-medium leading-snug flex-1">
+            <p className="text-xs font-medium leading-relaxed flex-1">
               {toast.mensaje}
             </p>
 
             <button
               type="button"
               onClick={() => removerToast(toast.id)}
-              className="shrink-0 p-1 rounded hover:bg-slate-100 text-slate-400 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-petroleo-700"
+              className="shrink-0 p-1 rounded-md text-texto-terciario hover:text-texto-principal hover:bg-fondo focus:outline-none focus:ring-2 focus:ring-petroleo-700"
               aria-label="Cerrar notificación"
             >
-              <X className="w-4 h-4" />
+              <X className="w-3.5 h-3.5" />
             </button>
           </div>
         );

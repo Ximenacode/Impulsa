@@ -66,6 +66,14 @@ const NOMBRES_MESES = [
   'diciembre',
 ];
 
+export function getFechaActualEspanol(): string {
+  const today = new Date();
+  const diaSemana = NOMBRES_DIAS[today.getDay()];
+  const diaMes = today.getDate();
+  const mes = NOMBRES_MESES[today.getMonth()];
+  return `${diaSemana}, ${diaMes} de ${mes}`;
+}
+
 export function formatFechaLegible(dateStr?: string): string {
   if (!dateStr || dateStr.trim() === '') return 'Sin fecha asignada';
   const parts = dateStr.split('-');
@@ -93,10 +101,33 @@ export function formatFechaLegible(dateStr?: string): string {
   return `${diaSemana}, ${diaMes} de ${mes}`;
 }
 
+export function formatFechaEtiqueta(dateStr?: string): string {
+  if (!dateStr || dateStr.trim() === '') return 'Sin fecha';
+  const parts = dateStr.split('-');
+  if (parts.length !== 3) return dateStr;
+  const [, m, d] = parts.map(Number);
+  const diff = getDiasDiferencia(dateStr);
+
+  if (diff === 0) return 'Hoy';
+  if (diff === -1) return 'Hace 1 día';
+  if (diff < -1) return `Hace ${Math.abs(diff)} días`;
+  if (diff === 1) return 'Mañana';
+  return `${d} ${NOMBRES_MESES[m - 1].substring(0, 3)}.`;
+}
+
 export function formatFechaCorta(dateStr?: string): string {
   if (!dateStr || dateStr.trim() === '') return '-';
   const parts = dateStr.split('-');
   if (parts.length !== 3) return dateStr;
   const [, m, d] = parts.map(Number);
   return `${d} ${NOMBRES_MESES[m - 1].substring(0, 3)}.`;
+}
+
+export function getIniciales(nombre: string): string {
+  if (!nombre) return '';
+  const palabras = nombre.trim().split(/\s+/);
+  if (palabras.length === 1) {
+    return palabras[0].substring(0, 2).toUpperCase();
+  }
+  return (palabras[0][0] + palabras[1][0]).toUpperCase();
 }

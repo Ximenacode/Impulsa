@@ -38,18 +38,39 @@ Impulsa busca resolver cuatro preguntas críticas que el asesor debe responder a
 
 ---
 
-## 4. Alcance del Prototipo (Versión 1.0)
+## 4. Alcance Real del Prototipo (Versión Actual)
 
-El prototipo actual se delimita a las siguientes capacidades esenciales:
+El prototipo actual se delimita a las siguientes capacidades esenciales implementadas:
 
 ### Incluido en el alcance:
-- **Pantalla “Mi día”:** Tablero de prioridades diarias con pendientes vencidos, programados para hoy y próximos seguimientos, con acceso inmediato a registrar el resultado de la acción.
-- **Directorio de Contactos:** Listado estructurado con búsqueda inmediata por nombre o negocio, y filtros por etapa comercial y origen del contacto.
-- **Formulario enfocado de creación y edición:** Registro rápido de datos esenciales sin campos burocráticos innecesarios, vinculando obligatoriamente la fecha con la acción si se programa un seguimiento.
-- **Ficha de Detalle de Contacto:** Visualización unificada de datos del negocio, necesidad, origen, etapa comercial, historial de conversaciones y próxima acción pendiente.
-- **Gestión de Oportunidades Comerciales:** Tablero accesible por etapas (Nuevo, Contactado, Interesado, Cerrado con venta, Cerrado sin venta) con registro opcional de motivo de pérdida y resolución guiada de seguimientos pendientes al cerrar.
-- **Panel de Resultados:** Métricas de demostración para evaluar volumen por etapa, origen y tasa de conversión sobre datos cargados.
-- **Persistencia local (localStorage):** Conservación de cambios en el navegador y capacidad de reiniciar los datos de demostración en cualquier momento.
+- **Pantalla “Mi día” (Centro de trabajo):**
+  - Encabezado con fecha actual en español y botón primario consistente "Nuevo contacto".
+  - Resumen cuantitativo compacto con superficies neutras (Vencidos, Para hoy, Próximos días).
+  - Tres secciones organizadas por prioridad: *Requieren atención*, *Para hoy* y *Próximos seguimientos*, con contadores visibles.
+  - Tarjetas de contacto rediseñadas con iniciales en avatar, bloque suave de "Próxima acción", etiquetas discretas y acción directa "Registrar seguimiento".
+- **Directorio de Contactos:**
+  - Búsqueda en tiempo real por nombre de contacto o negocio.
+  - Filtros ordenados por etapa comercial y canal de origen.
+  - Tabla de datos estructurada en escritorio para escaneo rápido y tarjetas apiladas en móvil.
+- **Ficha de Detalle de Contacto:**
+  - Encabezado con nombre, negocio, origen y selector directo de etapa.
+  - Bloque superior destacado para la **Próxima Acción y Seguimiento** (futuro), diferenciado del **Historial de Conversaciones** cronológico (pasado).
+  - Edición rápida de datos generales y reprogramación o cierre de seguimientos.
+- **Tablero de Oportunidades:**
+  - Cinco etapas comerciales: *Nuevo*, *Contactado*, *Interesado*, *Cerrado con venta*, *Cerrado sin venta*.
+  - Tablero de 5 columnas en escritorio con selector accesible por tarjeta.
+  - Selector de etapa en móvil que muestra una lista completa de tarjetas evitando desplazamiento horizontal excesivo.
+  - Al cerrar sin venta: registro opcional de motivo de descarte.
+  - Al cerrar con seguimiento pendiente: confirmación para completar o mantener el recordatorio activo.
+- **Panel de Resultados y Conversión:**
+  - KPIs de volumen y Cierres con venta.
+  - Cálculo de Tasa de Conversión: `(Cierres con venta / Total) × 100` con protección ante división entre cero.
+  - Gráficos de barras sencillos para comparar oportunidades por etapa y origen.
+  - Identificación explícita de datos demostrativos.
+- **Persistencia local (localStorage):**
+  - Conservación de cambios en el navegador local.
+  - Manejo seguro de fechas en formato local ISO (`YYYY-MM-DD`).
+  - Botón "Restablecer demo" situado en la barra lateral con diálogo de confirmación.
 
 ### Fuera del alcance (Limitaciones deliberadas de esta versión):
 - **Sin backend ni sincronización multi-dispositivo:** Todos los datos residen en el navegador local (`localStorage`), por lo que no es apto para almacenar datos personales reales o confidenciales.

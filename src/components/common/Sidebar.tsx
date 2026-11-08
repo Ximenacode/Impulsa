@@ -1,14 +1,15 @@
 import React from 'react';
 import { useContactos } from '../../context/ContactContext';
 import { Pantalla } from '../../types';
-import { CalendarCheck, Users, TrendingUp, BarChart3, Plus } from 'lucide-react';
+import { CalendarCheck, Users, TrendingUp, BarChart3, RotateCcw } from 'lucide-react';
 import { getEstadoFecha } from '../../utils/dateUtils';
+import { BrandLogo } from './BrandLogo';
 
 interface SidebarProps {
-  onAbrirNuevoContacto: () => void;
+  onAbrirRestablecer: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ onAbrirNuevoContacto }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ onAbrirRestablecer }) => {
   const { pantallaActiva, navegarA, contactos } = useContactos();
 
   // Calcular número de pendientes urgentes (hoy + vencidos) para badge
@@ -18,18 +19,26 @@ export const Sidebar: React.FC<SidebarProps> = ({ onAbrirNuevoContacto }) => {
     return estado === 'hoy' || estado === 'vencido';
   }).length;
 
-  const items: { id: Pantalla; label: string; icon: React.ComponentType<{ className?: string }>; badge?: number }[] = [
+  const items: {
+    id: Pantalla;
+    label: string;
+    icon: React.ComponentType<{ className?: string }>;
+    badge?: number;
+    badgeStyle?: string;
+  }[] = [
     {
       id: 'mi_dia',
       label: 'Mi día',
       icon: CalendarCheck,
       badge: pendientesUrgentes > 0 ? pendientesUrgentes : undefined,
+      badgeStyle: 'bg-estado-vencidoBg text-estado-vencidoText border border-estado-vencidoBorder',
     },
     {
       id: 'contactos',
       label: 'Contactos',
       icon: Users,
       badge: contactos.length,
+      badgeStyle: 'bg-fondo text-texto-secundario border border-borde-suave',
     },
     {
       id: 'oportunidades',
@@ -46,65 +55,74 @@ export const Sidebar: React.FC<SidebarProps> = ({ onAbrirNuevoContacto }) => {
   return (
     <aside
       aria-label="Navegación principal de escritorio"
-      className="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 shrink-0 min-h-[calc(100vh-4rem)] p-4"
+      className="hidden md:flex flex-col w-[240px] bg-superficie border-r border-borde-suave shrink-0 h-screen sticky top-0 px-4 py-6 justify-between select-none"
     >
-      <div className="mb-4">
-        <button
-          type="button"
-          onClick={onAbrirNuevoContacto}
-          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-petroleo-700 text-white font-medium text-sm hover:bg-petroleo-800 active:bg-petroleo-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-petroleo-700 transition-colors"
-        >
-          <Plus className="w-4 h-4" aria-hidden="true" />
-          <span>Nuevo contacto</span>
-        </button>
+      <div className="space-y-6">
+        {/* Marca e identidad */}
+        <div className="px-2">
+          <BrandLogo />
+        </div>
+
+        {/* Menú de navegación principal */}
+        <nav className="space-y-1" aria-label="Secciones de la aplicación">
+          {items.map((item) => {
+            const Icon = item.icon;
+            const esActivo =
+              pantallaActiva === item.id ||
+              (pantallaActiva === 'detalle' && item.id === 'contactos');
+
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => navegarA(item.id)}
+                aria-current={esActivo ? 'page' : undefined}
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-petroleo-700 ${
+                  esActivo
+                    ? 'bg-petroleo-50 text-petroleo-700 font-semibold shadow-2xs'
+                    : 'text-texto-secundario hover:text-texto-principal hover:bg-fondo'
+                }`}
+              >
+                <div className="flex items-center gap-2.5">
+                  <Icon
+                    className={`w-4 h-4 transition-colors ${
+                      esActivo ? 'text-petroleo-700' : 'text-texto-terciario'
+                    }`}
+                    aria-hidden="true"
+                  />
+                  <span>{item.label}</span>
+                </div>
+
+                {typeof item.badge === 'number' && (
+                  <span
+                    className={`text-[11px] px-1.5 py-0.2 rounded-full font-semibold ${
+                      item.badgeStyle || 'bg-fondo text-texto-secundario'
+                    }`}
+                  >
+                    {item.badge}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </nav>
       </div>
 
-      <nav className="flex-1 space-y-1" aria-label="Menú principal">
-        {items.map((item) => {
-          const Icon = item.icon;
-          const esActivo = pantallaActiva === item.id || (pantallaActiva === 'detalle' && item.id === 'contactos');
+      {/* Parte inferior: Restablecer demo con confirmación */}
+      <div className="pt-4 border-t border-borde-suave px-1 space-y-3">
+        <button
+          type="button"
+          onClick={onAbrirRestablecer}
+          className="w-full flex items-center gap-2 px-2.5 py-2 rounded-lg text-xs text-texto-secundario hover:text-texto-principal hover:bg-fondo transition-colors focus:outline-none focus:ring-2 focus:ring-petroleo-700"
+          title="Restablecer datos ficticios de demostración"
+        >
+          <RotateCcw className="w-3.5 h-3.5 text-texto-terciario" aria-hidden="true" />
+          <span>Restablecer demo</span>
+        </button>
 
-          return (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => navegarA(item.id)}
-              aria-current={esActivo ? 'page' : undefined}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-petroleo-700 ${
-                esActivo
-                  ? 'bg-petroleo-50 text-petroleo-900 font-semibold'
-                  : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <Icon
-                  className={`w-5 h-5 ${
-                    esActivo ? 'text-petroleo-700' : 'text-slate-400'
-                  }`}
-                  aria-hidden="true"
-                />
-                <span>{item.label}</span>
-              </div>
-
-              {typeof item.badge === 'number' && (
-                <span
-                  className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
-                    item.id === 'mi_dia' && pendientesUrgentes > 0
-                      ? 'bg-rose-100 text-rose-800'
-                      : 'bg-slate-100 text-slate-600'
-                  }`}
-                >
-                  {item.badge}
-                </span>
-              )}
-            </button>
-          );
-        })}
-      </nav>
-
-      <div className="pt-4 border-t border-slate-200 mt-auto text-xs text-slate-500">
-        <p className="font-medium text-slate-700">Impulsa v1.0</p>
-        <p className="mt-0.5">Diseño centrado en el asesor de microemprendedores.</p>
+        <p className="text-[11px] text-texto-terciario px-2 leading-tight">
+          Diseño de experiencia comercial enfocado en asesores.
+        </p>
       </div>
     </aside>
   );

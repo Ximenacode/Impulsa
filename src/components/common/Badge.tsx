@@ -1,42 +1,42 @@
 import React from 'react';
 import { EtapaComercial, OrigenContacto, ProductoInteres } from '../../types';
 import { EstadoFecha } from '../../utils/dateUtils';
-import { Clock, CheckCircle2, Calendar, AlertTriangle, Tag, Sparkles, Building2 } from 'lucide-react';
+import { Clock, CheckCircle2, Calendar, AlertCircle, Tag, Sparkles, Building2 } from 'lucide-react';
 
 export const EtapaBadge: React.FC<{ etapa: EtapaComercial }> = ({ etapa }) => {
   switch (etapa) {
     case 'nuevo':
       return (
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-800 border border-blue-200">
-          <Sparkles className="w-3 h-3 text-blue-600" aria-hidden="true" />
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-[#F0F7FB] text-[#1E5670] border border-[#CFE4F0]">
+          <Sparkles className="w-3 h-3 text-[#1E5670]" aria-hidden="true" />
           <span>Nuevo</span>
         </span>
       );
     case 'contactado':
       return (
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-50 text-purple-800 border border-purple-200">
-          <Clock className="w-3 h-3 text-purple-600" aria-hidden="true" />
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-[#F7F4FB] text-[#4A3A73] border border-[#E1D8F1]">
+          <Clock className="w-3 h-3 text-[#4A3A73]" aria-hidden="true" />
           <span>Contactado</span>
         </span>
       );
     case 'interesado':
       return (
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-900 border border-amber-200">
-          <Tag className="w-3 h-3 text-amber-600" aria-hidden="true" />
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-acento-calidoLight text-[#8C5D19] border border-acento-calidoBorder">
+          <Tag className="w-3 h-3 text-[#8C5D19]" aria-hidden="true" />
           <span>Interesado</span>
         </span>
       );
     case 'cerrado_con_venta':
       return (
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200">
-          <CheckCircle2 className="w-3 h-3 text-emerald-600" aria-hidden="true" />
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-estado-ganadoBg text-estado-ganadoText border border-estado-ganadoBorder">
+          <CheckCircle2 className="w-3 h-3 text-estado-ganadoText" aria-hidden="true" />
           <span>Cerrado con venta</span>
         </span>
       );
     case 'cerrado_sin_venta':
       return (
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700 border border-slate-300">
-          <span className="w-1.5 h-1.5 rounded-full bg-slate-500" aria-hidden="true" />
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-estado-perdidoBg text-estado-perdidoText border border-estado-perdidoBorder">
+          <span className="w-1.5 h-1.5 rounded-full bg-texto-terciario" aria-hidden="true" />
           <span>Cerrado sin venta</span>
         </span>
       );
@@ -49,23 +49,23 @@ export const OrigenBadge: React.FC<{ origen: OrigenContacto }> = ({ origen }) =>
   const config = {
     referido: {
       label: 'Referido',
-      classes: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+      classes: 'bg-[#F2F8F4] text-[#205C38] border-[#CFE6D6]',
     },
     campana: {
       label: 'Campaña',
-      classes: 'bg-indigo-50 text-indigo-800 border-indigo-200',
+      classes: 'bg-[#F2F6FA] text-[#24537D] border-[#D1E0EE]',
     },
     visita: {
       label: 'Visita presencial',
-      classes: 'bg-cyan-50 text-cyan-800 border-cyan-200',
+      classes: 'bg-petroleo-50 text-petroleo-700 border-petroleo-200',
     },
   }[origen];
 
   return (
     <span
-      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium border ${config.classes}`}
+      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-medium border ${config.classes}`}
     >
-      <Building2 className="w-3 h-3 opacity-70" aria-hidden="true" />
+      <Building2 className="w-3 h-3 opacity-80" aria-hidden="true" />
       <span>{config.label}</span>
     </span>
   );
@@ -81,7 +81,7 @@ export const ProductoBadge: React.FC<{ producto?: ProductoInteres }> = ({ produc
   };
 
   return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
+    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-medium bg-fondo text-texto-secundario border border-borde-suave">
       <span>{labels[producto]}</span>
     </span>
   );
@@ -89,28 +89,28 @@ export const ProductoBadge: React.FC<{ producto?: ProductoInteres }> = ({ produc
 
 export const FechaEstadoBadge: React.FC<{
   estado: EstadoFecha;
-  texto?: string;
+  texto: string;
 }> = ({ estado, texto }) => {
   switch (estado) {
     case 'vencido':
       return (
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-300">
-          <AlertTriangle className="w-3.5 h-3.5 text-rose-600" aria-hidden="true" />
-          <span>{texto || 'Vencido'}</span>
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-estado-vencidoBg text-estado-vencidoText border border-estado-vencidoBorder">
+          <AlertCircle className="w-3 h-3 text-estado-vencidoText shrink-0" aria-hidden="true" />
+          <span>{texto}</span>
         </span>
       );
     case 'hoy':
       return (
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-petroleo-50 text-petroleo-900 border border-petroleo-300">
-          <Calendar className="w-3.5 h-3.5 text-petroleo-700" aria-hidden="true" />
-          <span>{texto || 'Para hoy'}</span>
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-estado-hoyBg text-estado-hoyText border border-estado-hoyBorder">
+          <Calendar className="w-3 h-3 text-estado-hoyText shrink-0" aria-hidden="true" />
+          <span>{texto}</span>
         </span>
       );
     case 'proximo':
       return (
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
-          <Calendar className="w-3.5 h-3.5 text-slate-500" aria-hidden="true" />
-          <span>{texto || 'Próximo'}</span>
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-medium bg-estado-proximoBg text-estado-proximoText border border-estado-proximoBorder">
+          <Calendar className="w-3 h-3 text-texto-terciario shrink-0" aria-hidden="true" />
+          <span>{texto}</span>
         </span>
       );
     default:

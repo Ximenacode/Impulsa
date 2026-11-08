@@ -1,84 +1,168 @@
-# Decisiones de Diseño UX/UI — Impulsa
+# Sistema y Decisiones de Diseño UX/UI — Impulsa
 
-Este documento detalla la justificación y los principios aplicados en la arquitectura, interacción y diseño visual de **Impulsa**, explicando el propósito detrás de cada decisión.
-
----
-
-## 1. Identidad Visual y Paleta Cromática
-
-### Color Principal: Verde Petróleo (`#15565F`)
-- **Propósito:** Transmitir solidez institucional, serenidad y cercanía humana, distanciándose del azul corporativo tradicional de la banca masiva y del rojo/naranja de urgencia comercial.
-- **Diferenciación de marca:** Es una identidad propia y sobria; no utiliza logotipos, colores ni elementos de identidad de Caja Trujillo ni de ninguna entidad financiera existente.
-- **Contraste accesible:** Cumple con el ratio WCAG AA (mínimo 4.5:1 sobre fondo blanco y texto blanco sobre verde petróleo `#15565F` alcanza ratio > 6:1).
-
-### Fondo y Superficies (`#F8FAFC` y `#FFFFFF`)
-- **Propósito:** Mantener una base limpia, luminosa y descansada para la vista en jornadas de uso prolongado.
-- **Evitar la fatiga cognitiva:** Se restringe deliberadamente el uso de sombras pesadas, degradados llamativos, bordes redondeados excesivos y tarjetas multicolores innecesarias.
-
-### Indicadores de Estado y No-Exclusividad del Color
-- **Principio WCAG 1.4.1 (Uso del color):** Ningún estado se comunica únicamente mediante color.
-- **Implementación:**
-  - *Vencido:* Fondo suave ámbar/rojizo cálido (`#FEF2F2`), borde suave, ícono de alerta de reloj y etiqueta textual explícita `Vencido (hace X días)`.
-  - *Para hoy:* Fondo suave esmeralda/petróleo (`#F0FDF4` / `#F0F7F8`), ícono de calendario y etiqueta `Hoy`.
-  - *Próximo:* Fondo pizarra neutro (`#F8FAFC`), ícono de calendario y etiqueta con la fecha legible (ej. `Jueves, 12 nov`).
-  - *Etapas comerciales:* Etiquetas con texto claro (ej. `Nuevo`, `Contactado`, `Interesado`, `Cerrado con venta`, `Cerrado sin venta`) con colores de baja saturación para no competir con el contenido principal.
+Este documento detalla los principios, tokens visuales, decisiones de arquitectura y la justificación de los cambios implementados en el rediseño de **Impulsa** para su presentación en el portafolio de diseño de producto.
 
 ---
 
-## 2. Navegación y Arquitectura de Información
+## 1. Identidad Visual y Paleta de Diseño
 
-### Estructura de Secciones:
-1. **Mi día:** Pantalla principal de trabajo. Enfocada en la acción inmediata del día a día.
-2. **Contactos:** Directorio completo para consulta, filtrado y edición de toda la cartera.
-3. **Oportunidades:** Vista panorámica del estado comercial de los prospectos.
-4. **Resultados:** Indicadores globales para evaluar el rendimiento sobre los datos registrados.
+### 1.1. Propósito de la Identidad
+Impulsa proyecta una imagen comercial **elegante, cercana y contemporánea**, diseñada con intención y equilibrio. Se aleja deliberadamente de los tonos azules genéricos de la banca corporativa tradicional y de las interfaces saturadas de estímulos.
 
-### Navegación Responsiva
-- **Escritorio:** Barra lateral izquierda fija (*Sidebar*). Permite saltar entre secciones con un clic y mantener visible el estado activo y el botón de acción rápida `+ Nuevo contacto`.
-- **Móvil:** Barra de navegación inferior (*Bottom Navigation Bar*) fija para los pulgares, complementada con una cabecera superior compacta con acceso al botón `+ Nuevo contacto` y al menú de utilidades (restablecer datos de prueba).
+- **Símbolo de marca:** Emblema geométrico minimalista que representa impulso y avance ascendente en verde petróleo (`#145965`) con un detalle geométrico en acento cálido (`#E5AF63`).
+- **Tratamiento tipográfico:** Tipografía Inter con jerarquía definida y una pequeña etiqueta interactiva **"Demo"** que informa discretamente el contexto ficticio sin recurrir a franjas invasivas.
 
----
+### 1.2. Tokens de Color
 
-## 3. Jerarquía Visual y Pantallas Clave
+| Token | Código HEX | Propósito y Aplicación |
+|-------|------------|------------------------|
+| **Verde petróleo principal** | `#145965` | Color primario de marca, botones principales, enlaces activos e indicadores de foco. Ratio de contraste > 7:1 sobre fondo blanco. |
+| **Verde petróleo oscuro** | `#103E46` | Estados hover y active en botones primarios, aportando profundidad táctil. |
+| **Fondo general** | `#F5F7F8` | Fondo base de la aplicación. Proporciona una atmósfera descansada y luminosa. |
+| **Superficie** | `#FFFFFF` | Contenedores de tarjetas, paneles, barras y diálogos modales. |
+| **Texto principal** | `#172B35` | Títulos, nombres de contacto y etiquetas clave. Contraste óptimo (13:1). |
+| **Texto secundario** | `#526571` | Subtítulos, nombres de negocio, textos de apoyo y placeholders. Contraste 5.3:1 (cumple WCAG AA). |
+| **Texto terciario** | `#8396A2` | Metadatos secundarios, fechas relativas atenuadas e íconos decorativos. |
+| **Bordes suaves** | `#DFE7EB` | Delimitadores sutiles entre secciones y contornos de tarjetas sin saturación visual. |
+| **Acento cálido** | `#E5AF63` | Utilizado con moderación en la etapa "Interesado", avisos de atención y pequeños toques de énfasis. |
 
-### Pantalla "Mi día": Enfoque en el orden de urgencia
-- **Resumen superior:** Tres métricas cuantitativas concisas (Vencidos, Para hoy, Próximos) que funcionan como ancla visual para evaluar la carga de trabajo en un segundo.
-- **Ordenamiento algorítmico prioritario:**
-  1. Seguimientos vencidos en la parte superior: el contacto postergado representa el mayor riesgo de pérdida de relación.
-  2. Seguimientos programados para hoy: el compromiso del día.
-  3. Próximos seguimientos (ordenados cronológicamente): visibilidad hacia adelante sin abrumar.
-- **Acción en el punto de necesidad:** Cada tarjeta incluye el botón directo `Registrar seguimiento`, evitando que el usuario deba entrar al detalle para una acción rutinaria de registro.
+### 1.3. Estados de Urgencia y Tiempo (Sin Exclusividad del Color)
+- **Vencidos ("Requieren atención"):** Fondo suave (`#FEF3F2`), borde suave (`#FECDCA`), ícono de alerta e indicador textual explícito (`Hace X días`). Se descartan deliberadamente fondos rojos extensos o bordes rojos invasivos en toda la tarjeta.
+- **Para hoy:** Fondo suave petróleo (`#EBF5F7`), borde suave (`#C6E2E7`) y texto `Hoy`.
+- **Próximos seguimientos:** Fondo neutro suave (`#F2F4F7`), borde suave (`#EAECF0`) e ícono de reloj.
+- **Etapas comerciales:** Cada etapa cuenta con su propia etiqueta con texto visible, ícono y borde sutil, evitando depender de códigos cromáticos aislados.
 
-### Detalle del Contacto: Separación entre Pasado y Futuro
-- **Problema detectado en la hipótesis:** Los asesores confunden las notas de lo ocurrido con lo que falta por hacer.
-- **Solución de diseño:**
-  - **Caja de Próxima Acción (Futuro):** Ubicada arriba, con fondo diferenciado, fecha límite destacada y botón para completar o reprogramar.
-  - **Historial de Conversaciones (Pasado):** Presentado en formato de línea de tiempo descendente (lo más reciente arriba), con fecha de registro, tipo de interacción y notas inmutables.
+### 1.4. Tipografía y Escala
+Se utiliza la familia tipográfica **Inter** con alternativa de sistema sans-serif:
+- **Display / H1:** 24px - 28px (`text-2xl` a `text-3xl`), font-bold, tracking-tight.
+- **H2 (Secciones):** 16px - 18px (`text-base` a `text-lg`), font-bold.
+- **H3 (Tarjetas):** 14px - 15px (`text-sm` a `text-base`), font-bold.
+- **Cuerpo principal:** 12px - 14px (`text-xs` a `text-sm`), font-normal o font-medium.
+- **Micro-etiquetas y Badges:** 10px - 11px, font-semibold.
 
-### Tablero de Oportunidades: Accesibilidad ante todo
-- **Decisión crítica:** No depender exclusivamente del arrastre con mouse (*drag-and-drop*), el cual presenta serias barreras de accesibilidad motriz y dificultades ergonómicas en pantallas táctiles de teléfonos móviles.
-- **Solución:** Cada tarjeta incluye un selector de etapa claro y accesible (`<select>` o botones de estado), permitiendo mover un prospecto entre etapas tanto con teclado, pantalla táctil o ratón en un solo paso.
-
----
-
-## 4. Formularios y Prevención de Errores
-
-### Principios aplicados:
-- **Etiquetas siempre visibles:** Cada campo de formulario cuenta con un `<label>` accesible vinculado mediante `htmlFor` / `id`. No se utilizan etiquetas flotantes que desaparecen ni se depende exclusivamente del atributo `placeholder`.
-- **Formularios breves:** Solo dos campos son estrictamente obligatorios al crear un contacto (*Nombre* y *Necesidad identificada*). Los demás son opcionales para no frenar la captación en campo.
-- **Regla de integridad en seguimientos:** Si el usuario ingresa una fecha de seguimiento, es obligatorio indicar qué acción realizará, y viceversa. Esto evita entradas confusas como "Llamar" sin fecha o "Mañana" sin saber el motivo.
-- **Mensajes de error en contexto:** Los errores de validación se muestran directamente debajo del campo correspondiente, con texto descriptivo y atributos `aria-invalid="true"` y `aria-describedby`.
-- **Fechas sin alteración de zona horaria:** Las fechas se procesan y almacenan en formato de cadena ISO local (`YYYY-MM-DD`), evitando que conversiones horarias de JavaScript desplacen la fecha al día anterior o posterior.
+### 1.5. Escala de Espaciado y Radios
+- Espaciado modular basado en múltiplos de 4 (8px, 12px, 16px, 20px, 24px, 32px).
+- **Radio de tarjetas:** 14px (`rounded-tarjeta`), proporcionando esquinas contemporáneas sin bordes caricaturescos.
+- **Radio de botones e inputs:** 8px a 10px (`rounded-lg`).
+- **Sombras:** Sombra de tarjeta muy ligera (`0 1px 3px rgba(23, 43, 53, 0.04)`), reservando la elevación media para modales y notificaciones.
 
 ---
 
-## 5. Accesibilidad (A11y - WCAG 2.1 Nivel AA)
+## 2. Arquitectura de Información y Navegación
 
-| Criterio | Solución Implementada en Impulsa |
-|----------|----------------------------------|
-| **1.3.1 Información y relaciones** | Estructura semántica completa (`<main>`, `<nav>`, `<header>`, `<article>`, `<button>`, `<label>`). |
-| **1.4.3 Contraste mínimo** | Ratios de contraste superiores a 4.5:1 para texto normal y 3:1 para componentes de interfaz. |
-| **2.1.1 Teclado** | Todas las acciones (abrir modales, registrar notas, filtrar, buscar, cambiar etapas) son 100% operables mediante teclado (`Tab`, `Enter`, `Escape`, `Space`). |
-| **2.4.7 Foco visible** | Indicadores de foco consistentes y de alto contraste (`ring-2 ring-petroleo-700 ring-offset-2`). |
-| **2.5.5 Tamaño del objetivo táctil** | Botones, campos y enlaces con un área táctil mínima de 44x44 píxeles en dispositivos móviles. |
-| **4.1.2 Nombre, función, valor** | Atributos ARIA en diálogos modales (`role="dialog"`, `aria-modal="true"`, `aria-labelledby`) y regiones de anuncio en vivo (`role="status"`, `aria-live="polite"`). |
+### 2.1. Estructura de Navegación
+1. **Mi día:** Centro de trabajo matutino del asesor comercial.
+2. **Contactos:** Directorio consolidado para búsqueda, filtrado y edición.
+3. **Oportunidades:** Vista de avance comercial desde la captación hasta el cierre.
+4. **Resultados:** Indicadores clave y conversión sobre datos registrados.
+
+### 2.2. Experiencia en Escritorio
+- **Barra lateral fija de 240 px:** Acompaña al usuario en todo momento con la marca, acceso a las 4 pantallas y contadores de pendientes urgentes.
+- **Navegación activa elegante:** Fondo suave `#F0F7F9` y texto `#145965` con acento visual en lugar de contrastes agresivos.
+- **"Restablecer demo" al pie de la barra lateral:** Se traslada a la zona inferior de la barra de navegación para no competir con las acciones comerciales y conservar el diálogo de confirmación.
+- **Área de lectura controlada:** Ancho máximo acotado (`max-w-5xl` a `max-w-6xl`) con espaciado exterior de 32 px para evitar dispersión visual en monitores panorámicos.
+
+### 2.3. Experiencia en Móvil
+- **Cabecera superior compacta:** Muestra el logo, el acceso a la nota de demo y el botón de restablecer.
+- **Barra inferior de navegación fija:** 4 botones táctiles con íconos y etiquetas de texto claras, asegurando áreas de contacto táctil de al menos 48 px.
+- **Sin desbordamiento horizontal:** Contenido estructurado en una sola columna con márgenes laterales de 16 a 20 px y separación inferior adecuada para que la barra flotante no tape botones de acción.
+
+---
+
+## 3. Justificación de Decisiones de Rediseño
+
+### 3.1. Eliminación de Botones "Nuevo Contacto" Duplicados
+- **Problema previo:** Existían hasta 3 botones de "Nuevo contacto" compitiendo simultáneamente (en barra superior, en menú lateral y en el encabezado de página).
+- **Decisión de diseño:** Centralizar una **única acción principal visible por pantalla**, ubicada de manera predecible en la esquina superior derecha del encabezado de página. Esto reduce la carga cognitiva y aclara cuál es el llamado primario a la acción.
+
+### 3.2. Rediseño de la Pantalla "Mi día" como Centro de Trabajo
+- **Fecha actual en español:** Ubicada sobre el título para situar temporalmente al asesor al inicio de su jornada.
+- **Métricas secundarias compactas:** Tres tarjetas neutrales (Vencidos, Para hoy, Próximos) que informan el volumen sin restar protagonismo visual a las tareas concretas.
+- **Organización por secciones prioritarias:**
+  1. *Requieren atención:* Los contactos postergados encabezan la lista porque representan el mayor riesgo de abandono.
+  2. *Para hoy:* Compromisos inmediatos del día.
+  3. *Próximos seguimientos:* Visibilidad hacia adelante ordenada cronológicamente.
+- **Contador por sección:** Cada título incluye la cantidad exacta de elementos (ej. `Requieren atención (2)`).
+
+### 3.3. Rediseño de Tarjetas de Contacto
+- **Avatar con iniciales:** Ayuda a identificar visualmente al cliente antes de leer el texto.
+- **Mayor jerarquía en el nombre:** El nombre del emprendedor resalta en negrita, seguido del nombre comercial como dato complementario.
+- **Bloque de "Próxima acción" con fondo suave:** Contenedor diferenciado que resalta qué se debe hacer en la interacción.
+- **Tratamiento calmado para seguimientos vencidos:** Se reemplazaron los fondos rojos extensos y marcos pesados por una etiqueta de fecha puntual en color vino/rojo suave (`Hace 2 días`) y un punto indicador, manteniendo la serenidad en la interfaz.
+
+### 3.4. Tabla en Directorio de Contactos
+- **Escritorio:** Presentación en tabla estructurada con columnas alineadas (Contacto, Negocio, Necesidad, Etapa, Origen, Próximo seguimiento, Acción). Esto facilita el escaneo vertical rápido de decenas de prospectos.
+- **Móvil:** Transformación adaptativa a tarjetas apiladas individuales para mantener legibilidad sin desplazamiento horizontal.
+
+### 3.5. Tablero de Oportunidades: Adaptación Móvil Accesible
+- **Problema previo:** En pantallas pequeñas, 5 columnas Kanban apretadas generaban desbordamiento horizontal o tarjetas comprimidas ilegibles.
+- **Decisión de diseño:**
+  - En escritorio: Tablero de 5 columnas con selector accesible de etapa por tarjeta.
+  - En móvil: Selector desplegable de etapas que permite filtrar y revisar una columna a la vez con tarjetas de ancho completo.
+
+### 3.6. Tratamiento de la Nota "Demo"
+- Se retiró la franja superior invasiva que ocupaba espacio vertical valioso.
+- Se integró una pastilla interactiva **"Demo"** junto al logotipo. Al pulsarla, despliega un diálogo conciso:
+  > *“Esta demostración utiliza datos ficticios. Los cambios se guardan únicamente en este navegador. No ingreses información personal real”.*
+
+---
+
+## 4. Accesibilidad (WCAG 2.1 Nivel AA)
+
+- **Foco visible:** Indicador de foco consistente `outline: 2px solid #145965` con separación de 2 px en todos los controles interactivos.
+- **Etiquetas explícitas:** Todos los campos de formulario cuentan con `<label>` visible vinculado mediante `htmlFor`/`id`.
+- **Áreas táctiles:** Botones y enlaces con altura mínima de 40 a 48 px en vistas táctiles.
+- **Regiones de anuncio accesible:** Diálogos modales con atributos `role="dialog"`, `aria-modal="true"`, `aria-labelledby` y manejo de tecla `Escape`.
+- **Preferencia de movimiento:** Soporte para `@media (prefers-reduced-motion: reduce)` que minimiza animaciones y transiciones.
+
+---
+
+## 5. Wireframes Esquemáticos del Rediseño
+
+### 5.1. Pantalla "Mi día" (Escritorio)
+```text
++---------------------------------------------------------------------------------------+
+| [I] Impulsa [Demo]                                                                    |
++-------------------+-------------------------------------------------------------------+
+|                   | Domingo, 8 de noviembre                                           |
+| MI DÍA (activo)   | Mi día                                        [+ Nuevo contacto]  |
+| Contactos (8)     | Tus próximos contactos, en un solo lugar                          |
+| Oportunidades     | ----------------------------------------------------------------- |
+| Resultados        | [ Vencidos: 2 ]         [ Para hoy: 2 ]       [ Próximos días: 2 ]|
+|                   | ----------------------------------------------------------------- |
+|                   | REQUIEREN ATENCIÓN (2)                                            |
+|                   | +-------------------------------+ +-------------------------------+ |
+|                   | | (BM) Bertha M.  [Hace 2 días] | | (MT) Marcos T.  [Hace 1 día]  | |
+|                   | | Bodega San Pedro              | | Taller de Calzado Rápido      | |
+|                   | | Necesidad: Capital abarrotes  | | Necesidad: Máquina aparadora  | |
+|                   | | [Próxima acción: Llamar...]   | | [Próxima acción: Enviar...]   | |
+|                   | | [Contactado] [Visita]         | | [Contactado] [Campaña]        | |
+|                   | | [Ver detalle] [Registrar...]  | | [Ver detalle] [Registrar...]  | |
+|                   | +-------------------------------+ +-------------------------------+ |
+|                   | PARA HOY (2)                                                      |
+|                   | +-------------------------------+ +-------------------------------+ |
+|                   | | (RH) Rosa H.          [Hoy]   | | (WC) Walter C.        [Hoy]   | |
+|                   | | Panadería El Buen Trigo       | | Ferretería El Tornillo        | |
+|                   | | Necesidad: Horno rotatorio    | | Necesidad: Solución POS cobro | |
+| [↺ Restablecer]   | | [Ver detalle] [Registrar...]  | | [Ver detalle] [Registrar...]  | |
++-------------------+-------------------------------------------------------------------+
+```
+
+### 5.2. Directorio de Contactos (Tabla en Escritorio)
+```text
++---------------------------------------------------------------------------------------+
+| Contactos                                                         [+ Nuevo contacto]  |
+| [ Buscar contacto o negocio...         ] [ Todas las etapas v ] [ Todos los orígenes v] |
+| ------------------------------------------------------------------------------------- |
+| CONTACTO Y NEGOCIO     | NECESIDAD           | ETAPA       | PRÓXIMO SEGUIMIENTO| ACCIÓN |
+| -----------------------+---------------------+-------------+--------------------+------- |
+| (BM) Bertha M.         | Capital abarrotes   | Contactado  | [Hace 2 días]      | [Ver]  |
+|      Bodega San Pedro  | fin de mes...       |             | Llamar por boletas |        |
+| -----------------------+---------------------+-------------+--------------------+------- |
+| (RH) Rosa H.           | Horno rotatorio     | Interesado  | [Hoy]              | [Ver]  |
+|      Panadería El Trigo| antes de campaña... |             | Revisar proforma   |        |
++---------------------------------------------------------------------------------------+
+```
+
+> [!NOTE]
+> Estas decisiones corresponden a una **revisión y refinamiento visual de diseño de producto**. Todas las hipótesis de distribución e interacción permanecen sujetas a validación mediante pruebas con usuarios reales.

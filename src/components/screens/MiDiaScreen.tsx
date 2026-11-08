@@ -1,11 +1,16 @@
 import React, { useMemo } from 'react';
 import { useContactos } from '../../context/ContactContext';
 import { Contacto } from '../../types';
-import { getEstadoFecha, formatFechaLegible, getDiasDiferencia } from '../../utils/dateUtils';
+import {
+  getEstadoFecha,
+  formatFechaEtiqueta,
+  getDiasDiferencia,
+  getFechaActualEspanol,
+  getIniciales,
+} from '../../utils/dateUtils';
 import { FechaEstadoBadge, EtapaBadge, OrigenBadge } from '../common/Badge';
 import {
-  CalendarCheck,
-  AlertTriangle,
+  AlertCircle,
   Calendar,
   Clock,
   Plus,
@@ -52,7 +57,7 @@ export const MiDiaScreen: React.FC<MiDiaScreenProps> = ({
         getDiasDiferencia(b.fechaProximoContacto!)
     );
 
-    // Ordenar hoy: por orden de creación o nombre
+    // Ordenar hoy: alfabético
     hoy.sort((a, b) => a.nombre.localeCompare(b.nombre));
 
     // Ordenar próximos: el más cercano primero
@@ -68,144 +73,150 @@ export const MiDiaScreen: React.FC<MiDiaScreenProps> = ({
   const totalPendientes = vencidos.length + paraHoy.length + proximos.length;
 
   return (
-    <div className="space-y-6">
-      {/* Cabecera y botón principal */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
+    <div className="space-y-7 max-w-5xl">
+      {/* Encabezado de página */}
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 pb-2 border-b border-borde-suave">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+          <span className="text-xs font-medium text-texto-secundario uppercase tracking-wider block mb-1">
+            {getFechaActualEspanol()}
+          </span>
+          <h1 className="text-2xl sm:text-3xl font-bold text-texto-principal tracking-tight">
             Mi día
           </h1>
-          <p className="text-sm text-slate-600 mt-0.5">
-            Prioriza tus contactos del día y da el siguiente paso con cada emprendedor.
+          <p className="text-sm text-texto-secundario mt-0.5">
+            Tus próximos contactos, en un solo lugar
           </p>
         </div>
 
         <button
           type="button"
           onClick={onAbrirNuevoContacto}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-petroleo-700 text-white text-sm font-semibold hover:bg-petroleo-800 active:bg-petroleo-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-petroleo-700 transition-colors shrink-0"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-petroleo-700 text-white text-xs sm:text-sm font-semibold hover:bg-petroleo-800 active:bg-petroleo-900 shadow-xs transition-colors shrink-0 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-petroleo-700"
         >
           <Plus className="w-4 h-4" aria-hidden="true" />
           <span>Nuevo contacto</span>
         </button>
       </div>
 
-      {/* Tarjetas de resumen cuantitativo rápido */}
-      <section aria-label="Resumen de prioridades del día" className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+      {/* Resumen: Tres indicadores compactos con superficies neutras */}
+      <section
+        aria-label="Resumen de prioridades del día"
+        className="grid grid-cols-1 sm:grid-cols-3 gap-3.5"
+      >
         {/* Vencidos */}
-        <div
-          className={`p-4 rounded-xl border transition-all ${
-            vencidos.length > 0
-              ? 'bg-rose-50/70 border-rose-200 text-rose-950'
-              : 'bg-white border-slate-200 text-slate-800'
-          }`}
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-rose-800">
+        <div className="bg-superficie rounded-tarjeta border border-borde-suave p-4 shadow-tarjeta flex items-center justify-between">
+          <div>
+            <span className="text-xs font-medium text-texto-secundario block">
               Vencidos
             </span>
-            <AlertTriangle
-              className={`w-4 h-4 ${vencidos.length > 0 ? 'text-rose-600' : 'text-slate-400'}`}
-              aria-hidden="true"
-            />
+            <span className="text-2xl font-bold text-texto-principal mt-0.5 block">
+              {vencidos.length}
+            </span>
+            <span className="text-[11px] text-texto-terciario">
+              {vencidos.length === 1 ? 'Requiere atención' : 'Requieren atención'}
+            </span>
           </div>
-          <p className="mt-2 text-2xl font-bold">
-            {vencidos.length}
-          </p>
-          <p className="text-xs text-slate-600 mt-0.5">
-            {vencidos.length === 1 ? 'Seguimiento que requiere atención' : 'Seguimientos que requieren atención'}
-          </p>
+          <div
+            className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
+              vencidos.length > 0
+                ? 'bg-estado-vencidoBg text-estado-vencidoText border border-estado-vencidoBorder'
+                : 'bg-fondo text-texto-terciario'
+            }`}
+          >
+            <AlertCircle className="w-4 h-4" aria-hidden="true" />
+          </div>
         </div>
 
         {/* Para hoy */}
-        <div
-          className={`p-4 rounded-xl border transition-all ${
-            paraHoy.length > 0
-              ? 'bg-petroleo-50/70 border-petroleo-200 text-petroleo-950'
-              : 'bg-white border-slate-200 text-slate-800'
-          }`}
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-petroleo-800">
+        <div className="bg-superficie rounded-tarjeta border border-borde-suave p-4 shadow-tarjeta flex items-center justify-between">
+          <div>
+            <span className="text-xs font-medium text-texto-secundario block">
               Para hoy
             </span>
-            <Calendar
-              className={`w-4 h-4 ${paraHoy.length > 0 ? 'text-petroleo-700' : 'text-slate-400'}`}
-              aria-hidden="true"
-            />
+            <span className="text-2xl font-bold text-texto-principal mt-0.5 block">
+              {paraHoy.length}
+            </span>
+            <span className="text-[11px] text-texto-terciario">
+              {paraHoy.length === 1 ? 'Agendado para hoy' : 'Agendados para hoy'}
+            </span>
           </div>
-          <p className="mt-2 text-2xl font-bold">
-            {paraHoy.length}
-          </p>
-          <p className="text-xs text-slate-600 mt-0.5">
-            {paraHoy.length === 1 ? 'Compromiso agendado para hoy' : 'Compromisos agendados para hoy'}
-          </p>
+          <div
+            className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
+              paraHoy.length > 0
+                ? 'bg-petroleo-50 text-petroleo-700 border border-petroleo-200'
+                : 'bg-fondo text-texto-terciario'
+            }`}
+          >
+            <Calendar className="w-4 h-4" aria-hidden="true" />
+          </div>
         </div>
 
-        {/* Próximos */}
-        <div className="p-4 rounded-xl border bg-white border-slate-200 text-slate-800">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-600">
+        {/* Próximos días */}
+        <div className="bg-superficie rounded-tarjeta border border-borde-suave p-4 shadow-tarjeta flex items-center justify-between">
+          <div>
+            <span className="text-xs font-medium text-texto-secundario block">
               Próximos días
             </span>
-            <Clock className="w-4 h-4 text-slate-400" aria-hidden="true" />
+            <span className="text-2xl font-bold text-texto-principal mt-0.5 block">
+              {proximos.length}
+            </span>
+            <span className="text-[11px] text-texto-terciario">
+              Seguimientos a futuro
+            </span>
           </div>
-          <p className="mt-2 text-2xl font-bold text-slate-900">
-            {proximos.length}
-          </p>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Seguimientos agendados a futuro
-          </p>
+          <div className="w-9 h-9 rounded-lg bg-fondo text-texto-terciario flex items-center justify-center shrink-0">
+            <Clock className="w-4 h-4" aria-hidden="true" />
+          </div>
         </div>
       </section>
 
-      {/* Si no hay ningún pendiente en absoluto */}
+      {/* Si no hay pendientes en absoluto */}
       {totalPendientes === 0 && (
-        <div className="bg-white rounded-xl border border-slate-200 p-8 text-center max-w-lg mx-auto space-y-3">
-          <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 mx-auto flex items-center justify-center">
-            <CheckCircle2 className="w-6 h-6" />
+        <div className="bg-superficie rounded-tarjeta border border-borde-suave p-8 text-center max-w-md mx-auto space-y-3 shadow-tarjeta">
+          <div className="w-10 h-10 rounded-full bg-estado-ganadoBg text-estado-ganadoText mx-auto flex items-center justify-center">
+            <CheckCircle2 className="w-5 h-5" />
           </div>
-          <h2 className="text-base font-bold text-slate-900">
+          <h2 className="text-base font-bold text-texto-principal">
             ¡Estás completamente al día!
           </h2>
-          <p className="text-sm text-slate-600">
-            No tienes seguimientos pendientes ni atrasados. Puedes registrar un nuevo contacto o explorar tu cartera completa.
+          <p className="text-xs text-texto-secundario leading-relaxed">
+            No tienes tareas pendientes ni atrasadas para hoy. Puedes registrar un nuevo contacto para seguir ampliando tu cartera.
           </p>
           <div className="pt-2 flex justify-center gap-3">
             <button
               type="button"
               onClick={onAbrirNuevoContacto}
-              className="px-4 py-2 rounded-lg bg-petroleo-700 text-white text-sm font-medium hover:bg-petroleo-800"
+              className="px-4 py-2 rounded-lg bg-petroleo-700 text-white text-xs font-semibold hover:bg-petroleo-800 transition-colors"
             >
               Nuevo contacto
             </button>
             <button
               type="button"
               onClick={() => navegarA('contactos')}
-              className="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 text-sm font-medium hover:bg-slate-100"
+              className="px-4 py-2 rounded-lg border border-borde-suave text-texto-secundario hover:text-texto-principal hover:bg-fondo text-xs font-semibold transition-colors"
             >
-              Ver todos los contactos
+              Ver contactos
             </button>
           </div>
         </div>
       )}
 
-      {/* SECCIÓN 1: VENCIDOS (Máxima urgencia) */}
+      {/* SECCIÓN 1: REQUIEREN ATENCIÓN (Vencidos) */}
       {vencidos.length > 0 && (
-        <section aria-labelledby="seccion-vencidos" className="space-y-3">
+        <section aria-labelledby="seccion-vencidos" className="space-y-3.5">
           <div className="flex items-center gap-2">
-            <h2 id="seccion-vencidos" className="text-base font-bold text-rose-900 flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-rose-600" aria-hidden="true" />
-              <span>Seguimientos vencidos</span>
+            <h2 id="seccion-vencidos" className="text-sm font-bold text-texto-principal flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-estado-vencidoText inline-block" aria-hidden="true" />
+              <span>Requieren atención</span>
             </h2>
-            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800">
-              {vencidos.length} {vencidos.length === 1 ? 'urgente' : 'urgentes'}
+            <span className="text-[11px] font-semibold px-2 py-0.2 rounded-full bg-estado-vencidoBg text-estado-vencidoText border border-estado-vencidoBorder">
+              {vencidos.length}
             </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {vencidos.map((contacto) => (
-              <TarjetaPendiente
+              <TarjetaContacto
                 key={contacto.id}
                 contacto={contacto}
                 estado="vencido"
@@ -219,20 +230,20 @@ export const MiDiaScreen: React.FC<MiDiaScreenProps> = ({
 
       {/* SECCIÓN 2: PARA HOY */}
       {paraHoy.length > 0 && (
-        <section aria-labelledby="seccion-para-hoy" className="space-y-3">
+        <section aria-labelledby="seccion-para-hoy" className="space-y-3.5">
           <div className="flex items-center gap-2">
-            <h2 id="seccion-para-hoy" className="text-base font-bold text-petroleo-950 flex items-center gap-2">
-              <CalendarCheck className="w-4 h-4 text-petroleo-700" aria-hidden="true" />
-              <span>Compromisos para hoy</span>
+            <h2 id="seccion-para-hoy" className="text-sm font-bold text-texto-principal flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-petroleo-700 inline-block" aria-hidden="true" />
+              <span>Para hoy</span>
             </h2>
-            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-petroleo-100 text-petroleo-800">
+            <span className="text-[11px] font-semibold px-2 py-0.2 rounded-full bg-petroleo-100 text-petroleo-700">
               {paraHoy.length}
             </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {paraHoy.map((contacto) => (
-              <TarjetaPendiente
+              <TarjetaContacto
                 key={contacto.id}
                 contacto={contacto}
                 estado="hoy"
@@ -246,20 +257,20 @@ export const MiDiaScreen: React.FC<MiDiaScreenProps> = ({
 
       {/* SECCIÓN 3: PRÓXIMOS SEGUIMIENTOS */}
       {proximos.length > 0 && (
-        <section aria-labelledby="seccion-proximos" className="space-y-3 pt-2">
+        <section aria-labelledby="seccion-proximos" className="space-y-3.5">
           <div className="flex items-center gap-2">
-            <h2 id="seccion-proximos" className="text-base font-bold text-slate-800 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-slate-500" aria-hidden="true" />
-              <span>Próximas acciones programadas</span>
+            <h2 id="seccion-proximos" className="text-sm font-bold text-texto-principal flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-texto-terciario inline-block" aria-hidden="true" />
+              <span>Próximos seguimientos</span>
             </h2>
-            <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+            <span className="text-[11px] font-semibold px-2 py-0.2 rounded-full bg-fondo text-texto-secundario border border-borde-suave">
               {proximos.length}
             </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {proximos.map((contacto) => (
-              <TarjetaPendiente
+              <TarjetaContacto
                 key={contacto.id}
                 contacto={contacto}
                 estado="proximo"
@@ -274,76 +285,89 @@ export const MiDiaScreen: React.FC<MiDiaScreenProps> = ({
   );
 };
 
-interface TarjetaPendienteProps {
+interface TarjetaContactoProps {
   contacto: Contacto;
   estado: 'vencido' | 'hoy' | 'proximo';
   onRegistrar: () => void;
   onVerDetalle: () => void;
 }
 
-const TarjetaPendiente: React.FC<TarjetaPendienteProps> = ({
+const TarjetaContacto: React.FC<TarjetaContactoProps> = ({
   contacto,
   estado,
   onRegistrar,
   onVerDetalle,
 }) => {
+  const etiquetaFecha = formatFechaEtiqueta(contacto.fechaProximoContacto);
+  const iniciales = getIniciales(contacto.nombre);
+
   return (
-    <article
-      className={`rounded-xl border p-4.5 bg-white shadow-xs transition-shadow hover:shadow-sm flex flex-col justify-between gap-3 ${
-        estado === 'vencido'
-          ? 'border-rose-200 ring-1 ring-rose-100'
-          : estado === 'hoy'
-          ? 'border-petroleo-200 ring-1 ring-petroleo-50'
-          : 'border-slate-200'
-      }`}
-    >
-      <div>
-        {/* Cabecera de la tarjeta: Nombre, negocio y badge de fecha */}
-        <div className="flex items-start justify-between gap-2">
-          <div>
-            <h3 className="font-bold text-slate-900 text-base leading-snug">
-              {contacto.nombre}
-            </h3>
-            {contacto.negocio && (
-              <p className="text-xs font-medium text-slate-600 mt-0.5">
-                {contacto.negocio}
-              </p>
-            )}
+    <article className="bg-superficie rounded-tarjeta border border-borde-suave p-5 sm:p-6 shadow-tarjeta flex flex-col justify-between gap-4 transition-all duration-150 hover:shadow-elevada hover:border-petroleo-200">
+      <div className="space-y-3">
+        {/* Cabecera: Avatar con iniciales, Nombre, Negocio y Etiqueta de Fecha */}
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            {/* Avatar discreto con iniciales */}
+            <div
+              className={`w-9 h-9 rounded-full flex items-center justify-center font-semibold text-xs shrink-0 select-none ${
+                estado === 'vencido'
+                  ? 'bg-estado-vencidoBg text-estado-vencidoText border border-estado-vencidoBorder'
+                  : 'bg-petroleo-50 text-petroleo-700 border border-petroleo-200'
+              }`}
+              aria-hidden="true"
+            >
+              {iniciales}
+            </div>
+
+            <div className="min-w-0">
+              <h3 className="font-bold text-texto-principal text-sm sm:text-base leading-snug truncate">
+                {contacto.nombre}
+              </h3>
+              {contacto.negocio && (
+                <p className="text-xs text-texto-secundario truncate mt-0.5">
+                  {contacto.negocio}
+                </p>
+              )}
+            </div>
           </div>
 
-          <FechaEstadoBadge
-            estado={estado}
-            texto={formatFechaLegible(contacto.fechaProximoContacto)}
-          />
+          {/* Etiqueta breve con la fecha */}
+          <div className="shrink-0">
+            <FechaEstadoBadge estado={estado} texto={etiquetaFecha} />
+          </div>
         </div>
 
-        {/* Necesidad identificada del cliente */}
-        <div className="mt-2.5 text-xs text-slate-600">
-          <span className="font-semibold text-slate-700">Necesidad: </span>
-          <span className="line-clamp-2">{contacto.necesidad}</span>
+        {/* Necesidad del cliente */}
+        <div className="text-xs text-texto-secundario leading-relaxed">
+          <strong className="text-texto-principal font-semibold">Necesidad: </strong>
+          <span>{contacto.necesidad}</span>
         </div>
 
-        {/* Próxima acción pactada (resaltada) */}
+        {/* Bloque de "Próxima acción" con fondo suave */}
         {contacto.proximaAccion && (
-          <div className="mt-2 p-2 rounded-md bg-slate-50 border border-slate-200 text-xs">
-            <span className="font-semibold text-petroleo-900">Acción a realizar: </span>
-            <span className="text-slate-800 font-medium">{contacto.proximaAccion}</span>
+          <div className="p-3 rounded-lg bg-fondo border border-borde-suave text-xs">
+            <span className="text-[11px] font-semibold text-petroleo-700 uppercase tracking-wider block mb-0.5">
+              Próxima acción:
+            </span>
+            <p className="text-texto-principal font-medium leading-snug">
+              {contacto.proximaAccion}
+            </p>
           </div>
         )}
 
-        {/* Metadatos adicionales */}
-        <div className="mt-3 flex flex-wrap items-center gap-1.5">
+        {/* Metadatos discretos: Etapa y Origen */}
+        <div className="flex flex-wrap items-center gap-1.5 pt-1">
           <EtapaBadge etapa={contacto.etapa} />
           <OrigenBadge origen={contacto.origen} />
         </div>
       </div>
 
-      {/* Botones de acción */}
-      <div className="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2">
+      {/* Acciones al pie */}
+      <div className="pt-3 border-t border-borde-suave flex items-center justify-between gap-2">
         <button
           type="button"
           onClick={onVerDetalle}
-          className="inline-flex items-center gap-1 text-xs font-semibold text-slate-600 hover:text-petroleo-800 p-1 rounded focus:outline-none focus:ring-2 focus:ring-petroleo-700"
+          className="inline-flex items-center gap-1 text-xs font-semibold text-texto-secundario hover:text-petroleo-700 py-2 px-2.5 rounded-lg hover:bg-fondo transition-colors focus:outline-none focus:ring-2 focus:ring-petroleo-700 min-h-[40px]"
         >
           <span>Ver detalle</span>
           <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
@@ -352,7 +376,7 @@ const TarjetaPendiente: React.FC<TarjetaPendienteProps> = ({
         <button
           type="button"
           onClick={onRegistrar}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-petroleo-700 text-white text-xs font-semibold hover:bg-petroleo-800 active:bg-petroleo-900 shadow-xs focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-petroleo-700"
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-petroleo-700 text-white text-xs font-semibold hover:bg-petroleo-800 active:bg-petroleo-900 shadow-xs transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-petroleo-700 min-h-[40px]"
         >
           <span>Registrar seguimiento</span>
         </button>

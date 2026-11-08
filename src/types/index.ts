@@ -42,3 +42,4 @@ export interface ToastMessage {
   tipo: 'exito' | 'info' | 'advertencia';
   mensaje: string;
 }
+

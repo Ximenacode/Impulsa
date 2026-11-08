@@ -45,21 +45,19 @@ const MainLayout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-superficie-base text-slate-800 font-sans selection:bg-petroleo-100 selection:text-petroleo-900">
-      <Header
-        onAbrirNuevoContacto={() => setModalNuevoAbierto(true)}
-        onAbrirRestablecer={() => setModalRestablecerAbierto(true)}
-      />
+    <div className="min-h-screen flex flex-col md:flex-row bg-fondo text-texto-principal font-sans antialiased selection:bg-petroleo-100 selection:text-petroleo-900">
+      {/* Cabecera superior compacta para móvil */}
+      <Header onAbrirRestablecer={() => setModalRestablecerAbierto(true)} />
 
-      <div className="flex-1 flex max-w-7xl w-full mx-auto">
-        {/* Navegación lateral para escritorio */}
-        <Sidebar onAbrirNuevoContacto={() => setModalNuevoAbierto(true)} />
+      {/* Barra lateral de escritorio (240px) */}
+      <Sidebar onAbrirRestablecer={() => setModalRestablecerAbierto(true)} />
 
-        {/* Área de contenido principal accesible */}
+      {/* Área de contenido principal con ancho controlado y espaciado de 32px */}
+      <div className="flex-1 flex flex-col min-w-0">
         <main
           id="contenido-principal"
           tabIndex={-1}
-          className="flex-1 p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 focus:outline-none overflow-x-hidden"
+          className="flex-1 p-4 sm:p-6 md:p-8 pb-24 md:pb-12 focus:outline-none w-full"
         >
           {pantallaActiva === 'mi_dia' && (
             <MiDiaScreen
@@ -100,7 +98,7 @@ const MainLayout: React.FC = () => {
       {/* Notificaciones accesibles flotantes */}
       <ToastContainer />
 
-      {/* Modales funcionales */}
+      {/* Modales del sistema */}
       <NuevoContactoModal
         abierto={modalNuevoAbierto}
         alCerrar={() => setModalNuevoAbierto(false)}

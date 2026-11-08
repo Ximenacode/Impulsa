@@ -181,3 +181,4 @@ export function generarContactosIniciales(): Contacto[] {
     },
   ];
 }
+

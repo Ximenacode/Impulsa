@@ -13,7 +13,12 @@ export const BottomNav: React.FC = () => {
     return estado === 'hoy' || estado === 'vencido';
   }).length;
 
-  const items: { id: Pantalla; label: string; icon: React.ComponentType<{ className?: string }>; badge?: number }[] = [
+  const items: {
+    id: Pantalla;
+    label: string;
+    icon: React.ComponentType<{ className?: string }>;
+    badge?: number;
+  }[] = [
     {
       id: 'mi_dia',
       label: 'Mi día',
@@ -40,12 +45,14 @@ export const BottomNav: React.FC = () => {
   return (
     <nav
       aria-label="Navegación inferior para dispositivos móviles"
-      className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-40 px-2 py-1 shadow-lg"
+      className="md:hidden fixed bottom-0 left-0 right-0 bg-superficie border-t border-borde-suave z-40 px-2 py-1 shadow-elevada"
     >
-      <div className="grid grid-cols-4 gap-1">
+      <div className="grid grid-cols-4 gap-1 max-w-md mx-auto">
         {items.map((item) => {
           const Icon = item.icon;
-          const esActivo = pantallaActiva === item.id || (pantallaActiva === 'detalle' && item.id === 'contactos');
+          const esActivo =
+            pantallaActiva === item.id ||
+            (pantallaActiva === 'detalle' && item.id === 'contactos');
 
           return (
             <button
@@ -53,29 +60,31 @@ export const BottomNav: React.FC = () => {
               type="button"
               onClick={() => navegarA(item.id)}
               aria-current={esActivo ? 'page' : undefined}
-              className={`flex flex-col items-center justify-center min-h-[48px] py-1.5 px-1 rounded-md text-xs transition-colors relative focus:outline-none focus:ring-2 focus:ring-petroleo-700 ${
+              className={`flex flex-col items-center justify-center min-h-[48px] py-1 px-1 rounded-lg text-xs transition-colors relative focus:outline-none focus:ring-2 focus:ring-petroleo-700 ${
                 esActivo
-                  ? 'text-petroleo-800 font-semibold'
-                  : 'text-slate-500 hover:text-slate-800'
+                  ? 'text-petroleo-700 font-semibold'
+                  : 'text-texto-secundario hover:text-texto-principal'
               }`}
             >
               <div className="relative">
                 <Icon
-                  className={`w-5 h-5 ${
-                    esActivo ? 'text-petroleo-700' : 'text-slate-400'
+                  className={`w-4 h-4 transition-transform ${
+                    esActivo ? 'scale-110 text-petroleo-700' : 'text-texto-terciario'
                   }`}
                   aria-hidden="true"
                 />
                 {typeof item.badge === 'number' && (
                   <span
-                    className="absolute -top-1 -right-2 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-rose-600 text-white"
+                    className="absolute -top-1.5 -right-2 px-1 py-0.2 rounded-full text-[10px] font-bold bg-estado-vencidoText text-white"
                     aria-label={`${item.badge} pendientes urgentes`}
                   >
                     {item.badge}
                   </span>
                 )}
               </div>
-              <span className="mt-1 truncate max-w-full">{item.label}</span>
+              <span className="mt-1 text-[11px] truncate max-w-full">
+                {item.label}
+              </span>
             </button>
           );
         })}

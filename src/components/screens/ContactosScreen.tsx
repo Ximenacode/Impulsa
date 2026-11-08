@@ -1,13 +1,16 @@
 import React, { useState, useMemo } from 'react';
 import { useContactos } from '../../context/ContactContext';
-import { getEstadoFecha, formatFechaLegible } from '../../utils/dateUtils';
+import {
+  getEstadoFecha,
+  formatFechaEtiqueta,
+  getIniciales,
+} from '../../utils/dateUtils';
 import { EtapaBadge, OrigenBadge, ProductoBadge, FechaEstadoBadge } from '../common/Badge';
 import {
   Search,
   Plus,
   ArrowRight,
   UserX,
-  Building,
   X,
 } from 'lucide-react';
 
@@ -53,39 +56,39 @@ export const ContactosScreen: React.FC<ContactosScreenProps> = ({
     busqueda.trim() !== '' || filtroEtapa !== 'todas' || filtroOrigen !== 'todos';
 
   return (
-    <div className="space-y-6">
-      {/* Cabecera */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
+    <div className="space-y-6 max-w-5xl">
+      {/* Encabezado de página */}
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 pb-2 border-b border-borde-suave">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-            Directorio de Contactos
+          <h1 className="text-2xl sm:text-3xl font-bold text-texto-principal tracking-tight">
+            Contactos
           </h1>
-          <p className="text-sm text-slate-600 mt-0.5">
-            Consulta, filtra y gestiona la cartera de prospectos y emprendedores.
+          <p className="text-sm text-texto-secundario mt-0.5">
+            Consulta, filtra y gestiona la cartera de prospectos y emprendedores
           </p>
         </div>
 
         <button
           type="button"
           onClick={onAbrirNuevoContacto}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-petroleo-700 text-white text-sm font-semibold hover:bg-petroleo-800 active:bg-petroleo-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-petroleo-700 transition-colors shrink-0"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-petroleo-700 text-white text-xs sm:text-sm font-semibold hover:bg-petroleo-800 active:bg-petroleo-900 shadow-xs transition-colors shrink-0 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-petroleo-700"
         >
           <Plus className="w-4 h-4" aria-hidden="true" />
           <span>Nuevo contacto</span>
         </button>
       </div>
 
-      {/* Barra de Búsqueda y Filtros */}
-      <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
+      {/* Barra de Búsqueda y Filtros Ordenados */}
+      <div className="bg-superficie p-4 rounded-tarjeta border border-borde-suave shadow-tarjeta space-y-3">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
-          {/* Buscador de texto */}
+          {/* Buscador de texto visible y destacado */}
           <div className="md:col-span-6 relative">
             <label htmlFor="busqueda-contacto" className="sr-only">
               Buscar por nombre o negocio
             </label>
             <div className="relative">
               <Search
-                className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"
+                className="w-4 h-4 text-texto-terciario absolute left-3 top-1/2 -translate-y-1/2"
                 aria-hidden="true"
               />
               <input
@@ -93,14 +96,14 @@ export const ContactosScreen: React.FC<ContactosScreenProps> = ({
                 id="busqueda-contacto"
                 value={busqueda}
                 onChange={(e) => setBusqueda(e.target.value)}
-                placeholder="Buscar por nombre o negocio (ej. Bertha, Panadería)..."
-                className="w-full pl-9 pr-8 py-2 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-petroleo-700"
+                placeholder="Buscar por contacto o negocio..."
+                className="w-full pl-9 pr-8 py-2 rounded-lg border border-borde-suave text-xs text-texto-principal bg-fondo focus:bg-superficie focus:outline-none focus:ring-2 focus:ring-petroleo-700 transition-colors"
               />
               {busqueda && (
                 <button
                   type="button"
                   onClick={() => setBusqueda('')}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 rounded"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-texto-terciario hover:text-texto-principal rounded"
                   aria-label="Borrar texto de búsqueda"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -118,7 +121,7 @@ export const ContactosScreen: React.FC<ContactosScreenProps> = ({
               id="filtro-etapa"
               value={filtroEtapa}
               onChange={(e) => setFiltroEtapa(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-petroleo-700"
+              className="w-full px-3 py-2 rounded-lg border border-borde-suave text-xs text-texto-principal bg-fondo focus:bg-superficie focus:outline-none focus:ring-2 focus:ring-petroleo-700 transition-colors"
             >
               <option value="todas">Todas las etapas comerciales</option>
               <option value="nuevo">Nuevo</option>
@@ -138,7 +141,7 @@ export const ContactosScreen: React.FC<ContactosScreenProps> = ({
               id="filtro-origen"
               value={filtroOrigen}
               onChange={(e) => setFiltroOrigen(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-petroleo-700"
+              className="w-full px-3 py-2 rounded-lg border border-borde-suave text-xs text-texto-principal bg-fondo focus:bg-superficie focus:outline-none focus:ring-2 focus:ring-petroleo-700 transition-colors"
             >
               <option value="todos">Todos los orígenes</option>
               <option value="visita">Visita presencial</option>
@@ -148,8 +151,8 @@ export const ContactosScreen: React.FC<ContactosScreenProps> = ({
           </div>
         </div>
 
-        {/* Contador y botón de reset de filtros */}
-        <div className="flex items-center justify-between text-xs text-slate-600 pt-1">
+        {/* Resumen de resultados */}
+        <div className="flex items-center justify-between text-xs text-texto-secundario pt-1">
           <p>
             Mostrando <strong>{contactosFiltrados.length}</strong> de{' '}
             <strong>{contactos.length}</strong> contactos
@@ -159,33 +162,33 @@ export const ContactosScreen: React.FC<ContactosScreenProps> = ({
             <button
               type="button"
               onClick={limpiarFiltros}
-              className="text-petroleo-700 hover:text-petroleo-900 font-semibold underline focus:outline-none focus:ring-1 focus:ring-petroleo-700 rounded px-1"
+              className="text-petroleo-700 hover:text-petroleo-800 font-semibold underline focus:outline-none focus:ring-1 focus:ring-petroleo-700 rounded px-1"
             >
-              Limpiar filtros de búsqueda
+              Limpiar filtros
             </button>
           )}
         </div>
       </div>
 
-      {/* Estado vacío por búsqueda sin resultados */}
+      {/* Estado vacío cuando no hay resultados */}
       {contactosFiltrados.length === 0 && (
-        <div className="bg-white rounded-xl border border-slate-200 p-8 text-center max-w-md mx-auto space-y-3">
-          <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 mx-auto flex items-center justify-center">
-            <UserX className="w-6 h-6" />
+        <div className="bg-superficie rounded-tarjeta border border-borde-suave p-8 text-center max-w-md mx-auto space-y-3 shadow-tarjeta">
+          <div className="w-10 h-10 rounded-full bg-fondo text-texto-terciario mx-auto flex items-center justify-center">
+            <UserX className="w-5 h-5" />
           </div>
-          <h2 className="text-base font-bold text-slate-900">
+          <h2 className="text-base font-bold text-texto-principal">
             No se encontraron contactos
           </h2>
-          <p className="text-sm text-slate-600">
+          <p className="text-xs text-texto-secundario">
             {hayFiltrosActivos
-              ? 'No hay registros que coincidan con los criterios de búsqueda o filtros seleccionados.'
+              ? 'No hay registros que coincidan con la búsqueda o los filtros aplicados.'
               : 'Aún no tienes contactos guardados.'}
           </p>
           {hayFiltrosActivos && (
             <button
               type="button"
               onClick={limpiarFiltros}
-              className="px-4 py-2 rounded-lg bg-petroleo-700 text-white text-xs font-semibold hover:bg-petroleo-800"
+              className="px-3.5 py-1.5 rounded-lg bg-petroleo-700 text-white text-xs font-semibold hover:bg-petroleo-800"
             >
               Restablecer filtros
             </button>
@@ -193,72 +196,184 @@ export const ContactosScreen: React.FC<ContactosScreenProps> = ({
         </div>
       )}
 
-      {/* Lista de Contactos (Diseño en tarjetas responsivas y estructuradas) */}
+      {/* TABLA LEGIBLE EN ESCRITORIO (Visible en md+) */}
       {contactosFiltrados.length > 0 && (
-        <div className="space-y-3">
+        <div className="hidden md:block bg-superficie rounded-tarjeta border border-borde-suave shadow-tarjeta overflow-hidden">
+          <table className="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr className="border-b border-borde-suave bg-fondo text-texto-secundario uppercase tracking-wider text-[11px] font-semibold">
+                <th scope="col" className="py-3 px-4">Contacto y Negocio</th>
+                <th scope="col" className="py-3 px-4">Necesidad</th>
+                <th scope="col" className="py-3 px-4">Etapa</th>
+                <th scope="col" className="py-3 px-4">Origen</th>
+                <th scope="col" className="py-3 px-4">Próximo seguimiento</th>
+                <th scope="col" className="py-3 px-4 text-right">Acción</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-borde-suave text-texto-principal">
+              {contactosFiltrados.map((contacto) => {
+                const estadoFecha = contacto.fechaProximoContacto
+                  ? getEstadoFecha(contacto.fechaProximoContacto)
+                  : 'sin_fecha';
+                const iniciales = getIniciales(contacto.nombre);
+                const etiquetaFecha = contacto.fechaProximoContacto
+                  ? formatFechaEtiqueta(contacto.fechaProximoContacto)
+                  : null;
+
+                return (
+                  <tr
+                    key={contacto.id}
+                    className="hover:bg-fondo/60 transition-colors"
+                  >
+                    {/* Contacto y Negocio */}
+                    <td className="py-3.5 px-4">
+                      <div className="flex items-center gap-2.5">
+                        <div
+                          className="w-7 h-7 rounded-full bg-petroleo-50 text-petroleo-700 border border-petroleo-200 flex items-center justify-center font-bold text-[10px] shrink-0"
+                          aria-hidden="true"
+                        >
+                          {iniciales}
+                        </div>
+                        <div className="min-w-0">
+                          <button
+                            type="button"
+                            onClick={() => navegarA('detalle', contacto.id)}
+                            className="font-bold text-texto-principal hover:text-petroleo-700 text-left block truncate focus:outline-none focus:underline"
+                          >
+                            {contacto.nombre}
+                          </button>
+                          {contacto.negocio && (
+                            <span className="text-[11px] text-texto-secundario block truncate">
+                              {contacto.negocio}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </td>
+
+                    {/* Necesidad */}
+                    <td className="py-3.5 px-4 max-w-[200px]">
+                      <span className="text-texto-secundario line-clamp-2">
+                        {contacto.necesidad}
+                      </span>
+                    </td>
+
+                    {/* Etapa */}
+                    <td className="py-3.5 px-4 whitespace-nowrap">
+                      <EtapaBadge etapa={contacto.etapa} />
+                    </td>
+
+                    {/* Origen */}
+                    <td className="py-3.5 px-4 whitespace-nowrap">
+                      <OrigenBadge origen={contacto.origen} />
+                    </td>
+
+                    {/* Próximo seguimiento */}
+                    <td className="py-3.5 px-4">
+                      {contacto.fechaProximoContacto && etiquetaFecha ? (
+                        <div className="space-y-0.5">
+                          <FechaEstadoBadge
+                            estado={estadoFecha}
+                            texto={etiquetaFecha}
+                          />
+                          {contacto.proximaAccion && (
+                            <span className="block text-[11px] text-texto-secundario truncate max-w-[160px]">
+                              {contacto.proximaAccion}
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-texto-terciario italic">
+                          Sin programar
+                        </span>
+                      )}
+                    </td>
+
+                    {/* Botón de acción */}
+                    <td className="py-3.5 px-4 text-right whitespace-nowrap">
+                      <button
+                        type="button"
+                        onClick={() => navegarA('detalle', contacto.id)}
+                        className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-borde-suave text-texto-secundario hover:text-petroleo-700 hover:bg-superficie font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-petroleo-700"
+                      >
+                        <span>Ver ficha</span>
+                        <ArrowRight className="w-3 h-3" />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* PRESENTACIÓN ADAPTADA EN TARJETAS PARA MÓVIL (Visible en < md) */}
+      {contactosFiltrados.length > 0 && (
+        <div className="md:hidden space-y-3">
           {contactosFiltrados.map((contacto) => {
             const estadoFecha = contacto.fechaProximoContacto
               ? getEstadoFecha(contacto.fechaProximoContacto)
               : 'sin_fecha';
+            const iniciales = getIniciales(contacto.nombre);
+            const etiquetaFecha = contacto.fechaProximoContacto
+              ? formatFechaEtiqueta(contacto.fechaProximoContacto)
+              : null;
 
             return (
               <article
                 key={contacto.id}
-                className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs hover:border-petroleo-300 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4"
+                className="bg-superficie rounded-tarjeta border border-borde-suave p-4 shadow-tarjeta space-y-3"
               >
-                {/* Columna principal: Identificación y necesidad */}
-                <div className="space-y-1.5 flex-1 min-w-0">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h2 className="text-base font-bold text-slate-900 truncate">
-                      {contacto.nombre}
-                    </h2>
-                    {contacto.negocio && (
-                      <span className="text-xs font-medium text-slate-600 flex items-center gap-1">
-                        <Building className="w-3.5 h-3.5 text-slate-400" aria-hidden="true" />
-                        <span>{contacto.negocio}</span>
-                      </span>
-                    )}
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-center gap-2.5">
+                    <div
+                      className="w-8 h-8 rounded-full bg-petroleo-50 text-petroleo-700 border border-petroleo-200 flex items-center justify-center font-bold text-xs shrink-0"
+                      aria-hidden="true"
+                    >
+                      {iniciales}
+                    </div>
+                    <div>
+                      <h2 className="font-bold text-sm text-texto-principal">
+                        {contacto.nombre}
+                      </h2>
+                      {contacto.negocio && (
+                        <p className="text-xs text-texto-secundario">
+                          {contacto.negocio}
+                        </p>
+                      )}
+                    </div>
                   </div>
 
-                  <p className="text-xs text-slate-600 line-clamp-2">
-                    <strong className="text-slate-700">Necesidad: </strong>
-                    {contacto.necesidad}
-                  </p>
-
-                  <div className="flex flex-wrap items-center gap-2 pt-1">
-                    <EtapaBadge etapa={contacto.etapa} />
-                    <OrigenBadge origen={contacto.origen} />
-                    {contacto.productoInteres && (
-                      <ProductoBadge producto={contacto.productoInteres} />
-                    )}
-                  </div>
+                  {contacto.fechaProximoContacto && etiquetaFecha && (
+                    <FechaEstadoBadge
+                      estado={estadoFecha}
+                      texto={etiquetaFecha}
+                    />
+                  )}
                 </div>
 
-                {/* Columna secundaria: Próximo seguimiento y botón de detalle */}
-                <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center gap-2 pt-2 md:pt-0 border-t md:border-t-0 border-slate-100 shrink-0">
-                  <div className="text-left md:text-right">
-                    <span className="block text-[11px] font-semibold text-slate-500 uppercase">
-                      Próximo seguimiento
-                    </span>
-                    {contacto.fechaProximoContacto ? (
-                      <FechaEstadoBadge
-                        estado={estadoFecha}
-                        texto={formatFechaLegible(contacto.fechaProximoContacto)}
-                      />
-                    ) : (
-                      <span className="text-xs text-slate-400 italic">
-                        Sin programar
-                      </span>
-                    )}
-                  </div>
+                <p className="text-xs text-texto-secundario line-clamp-2">
+                  <strong className="text-texto-principal">Necesidad: </strong>
+                  {contacto.necesidad}
+                </p>
 
+                <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                  <EtapaBadge etapa={contacto.etapa} />
+                  <OrigenBadge origen={contacto.origen} />
+                  {contacto.productoInteres && (
+                    <ProductoBadge producto={contacto.productoInteres} />
+                  )}
+                </div>
+
+                <div className="pt-2 border-t border-borde-suave flex items-center justify-end">
                   <button
                     type="button"
                     onClick={() => navegarA('detalle', contacto.id)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 hover:border-petroleo-700 text-slate-700 hover:text-petroleo-800 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-petroleo-700 transition-colors"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-borde-suave text-texto-secundario hover:text-petroleo-700 text-xs font-semibold"
                   >
-                    <span>Ver ficha</span>
-                    <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+                    <span>Ver ficha completa</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </article>
