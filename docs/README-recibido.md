@@ -1,4 +1,4 @@
-> Adaptación Impulsa: consulta [README-IMPULSA.md](../README-IMPULSA.md) para ejecutar y revisar la etapa 1. A continuación se conserva la descripción original.
+> Referencia histórica: el [registro de la etapa 1](ETAPA-1.md) y el [README vigente](../README.md) contienen la documentación de Impulsa. A continuación se conserva la descripción del proyecto original.
 
 # CRM system frontend prototype 
 # Modules
