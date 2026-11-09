@@ -1,81 +1,49 @@
-# Flujo Principal de Registro y Seguimiento — Impulsa
-
-## 1. Diagrama del Recorrido Principal
-
-El flujo de usuario está diseñado para resolver la fricción entre la captación en campo y el seguimiento oportuno:
+# Flujo principal implementado
 
 ```mermaid
 flowchart TD
-    Start(["Inicio de Jornada: Abre Impulsa"]) --> MiDia["Pantalla 'Mi Día'<br/>(Revisa 'Requieren atención', 'Para hoy' y 'Próximos')"]
-    
-    MiDia -->|Acción 1: Captura rápida| NuevoBtn["Presiona 'Nuevo contacto'"]
-    NuevoBtn --> ModalNuevo["Formulario de Nuevo Contacto<br/>- Nombre (*)<br/>- Negocio<br/>- Necesidad (*)<br/>- Producto<br/>- Origen<br/>- Acción y Fecha (opcionales vinculados)"]
-    ModalNuevo --> Guardar["Guardar contacto"]
-    Guardar --> ToastExito["Notificación accesible de guardado"]
-    ToastExito --> Detalle["Vista 'Detalle del Contacto'"]
-
-    Detalle --> ProgSeg["Programar seguimiento futuro<br/>(Acción concreta + Fecha comprometida)"]
-    ProgSeg --> Confirmado["Seguimiento agendado"]
-    
-    Confirmado --> DiaComprometido["Llega el día del contacto programado"]
-    DiaComprometido --> MiDia
-    
-    MiDia -->|Acción 2: Ejecución| PendienteCard["Visualiza contacto en 'Para hoy' o 'Requieren atención'"]
-    PendienteCard --> RegistrarModal["Presiona 'Registrar seguimiento'"]
-    RegistrarModal --> FormResumen["Anota resumen de lo conversado<br/>+ ¿Hubo cambio de etapa comercial?<br/>+ ¿Programar siguiente acción o completar?"]
-    FormResumen --> GuardarSeg["Guardar interacción"]
-    GuardarSeg --> HistorialActualizado["Historial enriquecido en la ficha<br/>y pendiente retirado de 'Mi Día'"]
+  A[Registrar contacto y negocio] --> B[Crear oportunidad vinculada]
+  B --> C[Programar seguimiento sin hora]
+  C --> D[Consultar en Mi día o Agenda]
+  D --> E[Registrar resultado]
+  E --> F{Decisión explícita}
+  F -->|Otra acción| C
+  F -->|Finalizar sin otra acción| G[Conservar historial]
+  B --> H[Revisar o cambiar etapa]
+  H --> I{Ganado o Perdido}
+  I -->|No| B
+  I -->|Sí| J[Revisar pendientes]
+  J --> K[Mantener o cancelar sin eliminar]
+  K --> L[Guardar cierre y fecha]
+  L --> M[Resultados calculados]
 ```
 
----
+## Contacto y oportunidad
 
-## 2. Descripción Paso a Paso del Recorrido
+Nombre y negocio son obligatorios; número, necesidad, preferencia y notas son opcionales. Se propone un origen editable. Los números iniciales `000 000 001` y similares son marcadores ficticios, no números operativos. No hay enlaces de llamada ni envío.
 
-### Paso 1: Inicio del día y orientación
-- **Objetivo del usuario:** Saber inmediatamente a quién atender y qué prioridad tienen sus pendientes.
-- **Punto de contacto:** Pantalla **Mi día**.
-- **Jerarquía visual:**
-  1. **Encabezado contextual:** Muestra la fecha actual en español (ej. *Domingo, 8 de noviembre*) para situar al asesor en el día.
-  2. **Tres indicadores compactos:** Vencidos, Para hoy y Próximos días en superficies neutras con acentos sutiles de estado.
-  3. **Lista priorizada de seguimientos por secciones:**
-     - *Requieren atención:* Los contactos postergados encabezan la lista para recuperar la relación.
-     - *Para hoy:* Compromisos pactados para la jornada presente.
-     - *Próximos seguimientos:* Horizonte de contactos futuros.
-  4. **Tarjeta de contacto:** Muestra iniciales del titular en avatar, nombre en alta jerarquía, nombre del negocio, etiqueta temporal (*Hoy*, *Hace 2 días*), necesidad del cliente y bloque destacado de *Próxima acción* con fondo suave.
+Una persona admite varias oportunidades. Cada una distingue necesidad financiera, categoría de producto y etapa comercial. Las categorías son financiamiento para capital de trabajo o maquinaria, cuenta de ahorro y cuenta para gestionar ingresos del negocio. **Monto solicitado** es opcional y solo existe para financiamiento; se oculta en las cuentas. El contacto no se cambia desde la oportunidad para conservar la relación con sus seguimientos.
 
-### Paso 2: Captación y registro de nuevo contacto
-- **Objetivo del usuario:** Registrar un prospecto rápidamente sin perder tiempo ni memorizar formularios complejos.
-- **Acción:** Presionar el botón principal visible **"Nuevo contacto"** (única acción principal en el encabezado).
-- **Interacción del formulario:**
-  - Campos esenciales requeridos: *Nombre* y *Necesidad detectada*.
-  - Campos contextuales opcionales: *Nombre del negocio*, *Producto de interés* (categorías genéricas: Financiamiento, Ahorro, Servicios de pago) y *Origen del contacto* (Referido, Campaña, Visita).
-  - Sección de seguimiento inicial: Si el asesor ya acordó una llamada o visita, puede ingresar la acción y la fecha. La validación exige que si se define una fecha, se especifique la acción y viceversa.
-- **Resultado:** Se guarda el registro en `localStorage`, se lanza una notificación accesible (toast) y se abre la ficha detallada del contacto.
+## Mi día y Agenda
 
-### Paso 3: Consulta y preparación del contexto
-- **Objetivo del usuario:** Antes de comunicarse, recordar qué habló previamente y qué busca el emprendedor.
-- **Punto de contacto:** Pantalla de **Detalle del contacto**.
-- **Estructura mental:**
-  - **Bloque de Información General:** Avatar con iniciales, nombre, negocio, etapa comercial (con selector accesible) y origen.
-  - **Caja de Próxima Acción (Futuro):** Ubicada en la parte superior con fecha límite destacada, botón para registrar la llamada y botón para reprogramar o marcar como realizado.
-  - **Historial de Conversaciones (Pasado):** Bitácora cronológica inmutable con fechas legibles, canal utilizado (llamada, visita, mensaje) y notas inmutables de acuerdos previos.
+Mi día incluye pendientes hasta hoy, próximos y realizados, con sus reglas de orden. Al consultar una fila se actualiza el panel; si el registro deja de coincidir con el filtro se limpia la selección. En móvil se usa un diálogo de detalle. La Agenda permite filtrar la fecha, usar la lista o consultar el mes. Los seguimientos son acciones del día, sin horarios inventados.
 
-### Paso 4: Ejecución y registro de la conversación
-- **Objetivo del usuario:** Marcar la tarea como completada y dejar constancia de lo ocurrido.
-- **Acción:** Presionar **"Registrar seguimiento"** (disponible tanto desde la tarjeta en *Mi día* como desde la ficha de detalle).
-- **Entrada de datos:**
-  - Canal de comunicación realizado (llamada, visita, mensaje u otro).
-  - Campo de texto para notas de la llamada o visita.
-  - Opción de actualizar la etapa comercial de la oportunidad (ejemplo: de *Contactado* a *Interesado*).
-  - Opción de programar la siguiente acción inmediata (acción + fecha).
-- **Resultado:**
-  - La conversación se agrega al historial inmutable del contacto.
-  - El seguimiento anterior queda cerrado y desaparece de la sección de vencidos/hoy de *Mi día*.
-  - Si se programó una nueva fecha, se recalcula la presencia del contacto en *Mi día* según la nueva fecha.
+## Tablero y cambios de etapa
 
-### Paso 5: Cierre de la oportunidad comercial
-- **Objetivo del usuario:** Concluir el proceso cuando el cliente concretó la operación o decidió desistir.
-- **Acción:** Cambiar la etapa a **"Cerrado con venta"** o **"Cerrado sin venta"**.
-- **Reglas de diseño:**
-  - Si se selecciona *Cerrado sin venta*, el sistema despliega un campo opcional para registrar el motivo de pérdida.
-  - Si el contacto tiene un seguimiento pendiente en la agenda, el sistema solicita explícitamente decidir si se completa dicho seguimiento o se mantiene activo.
+El Kanban conserva seis etapas. El conteo respeta búsqueda y filtro. Las tarjetas muestran el caso concreto: persona/negocio, necesidad, producto, monto solicitado solo si es financiamiento y próxima acción del asesor. No incorporan definiciones extensas. **Editar o cambiar etapa** permite operar con teclado; el arrastre abre el mismo formulario sin guardar al soltar.
+
+## Cierre y alternativas
+
+- Ganado o Perdido registra fecha de cierre.
+- Propuesta enviada significa información comercial compartida. Ganado representa un cierre comercial de la demo; no aprueba una solicitud ni implica desembolso.
+- Perdido exige motivo; Otro exige explicación.
+- Si hay pendientes se debe elegir mantenerlos o cancelarlos. Se explican ambas consecuencias antes de guardar.
+- Los cancelados se conservan en el historial. Los mantenidos se pueden completar, cancelar o reprogramar.
+- Reabrir limpia fecha y motivo de cierre, registra actividad y no reactiva seguimientos cancelados.
+- Completar exige resultado y elegir programar otra acción o finalizar sin otra acción. El guardado del resultado y la próxima acción es conjunto.
+
+## Errores y persistencia
+
+La validación conserva lo escrito. Los datos inválidos no se sustituyen automáticamente. El esquema v3 conserva productos anteriores como sin clasificar, incluidos sus importes históricos, y no los interpreta como solicitudes. La lectura no escribe. **Cargar demostración financiera** solicita confirmación para reemplazar contactos, oportunidades, seguimientos e historial con los nuevos ejemplos. Cancelar no modifica el almacenamiento.
+
+Las acciones de ejemplo son consultar cuánto financiamiento necesita, comprender su destino, coordinar una conversación, explicar información general del producto y confirmar si desea continuar. No se incorporan condiciones oficiales ni evaluación crediticia.

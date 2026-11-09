@@ -1,109 +1,43 @@
-# Plan y Guion de Prueba de Usabilidad — Impulsa
+# Plan de una futura prueba de usabilidad
 
-## 1. Información General del Estudio (Proyectado)
+**Estado: no realizada.** No existen participantes, tiempos ni resultados observados. El objetivo es evaluar comprensión del recorrido y facilidad de completar tareas, diferenciándolo de las pruebas técnicas.
 
-- **Propósito:** Evaluar la facilidad de aprendizaje, claridad de navegación y comprensión de los flujos principales de la aplicación web Impulsa en asesores comerciales o perfiles afines.
-- **Formato:** Prueba moderada presencial o remota (videollamada con pantalla compartida).
-- **Duración estimada:** 25 a 35 minutos por sesión.
-- **Perfil de participantes esperado:** 4 a 5 personas con experiencia en ventas, microfinanzas o asesoría a pequeños negocios.
+## Preparación
 
-> [!IMPORTANT]
-> **Aviso de transparencia:**
-> Este es un **guion metodológico para futuras pruebas**. No representa sesiones de prueba realizadas ni contiene datos de participantes reales.
+Definir participantes pertinentes al usuario hipotético, acordar su participación y usar exclusivamente datos ficticios. Registrar dispositivo, ancho de pantalla y familiaridad con herramientas comerciales. No explicar la navegación antes de las tareas. Pedir que la persona describa lo que espera y lo que le genera dudas; evitar guiar hacia controles concretos.
 
----
+## Tareas propuestas
 
-## 2. Introducción para el Moderador (Protocolo Inicial)
+1. Un pequeño negocio te ha pedido información. Deja registrada a la persona, su negocio, su necesidad y un número ficticio para encontrarla después.
+2. La persona necesita capital de trabajo para comprar mercadería. Registra esa necesidad, la categoría de producto y el importe ficticio que desea solicitar.
+3. Necesitas retomar la conversación mañana. Organiza esa acción y comprueba que podrás encontrarla ese día.
+4. La conversación se pospone dos días. Actualiza lo necesario sin crear una acción duplicada.
+5. La persona explica para qué necesita financiamiento. Registra lo ocurrido y deja preparada una conversación para conocer si desea continuar.
+6. Revisa las oportunidades para explicar cuáles están en cada momento comercial y qué harías a continuación.
+7. En un caso ficticio, el asesor decide registrar un cierre comercial y queda una acción pendiente. Registra ese cierre y decide qué ocurrirá con la acción. Explica qué significa ese cierre respecto de una aprobación o desembolso.
+8. Otro negocio decide no continuar por una razón distinta de las habituales. Registra el cierre y comprueba cómo aparece en los resultados.
+9. Vuelve a abrir la aplicación y comprueba si sigue disponible tu trabajo.
 
-> *"Hola, gracias por participar en esta sesión. Estamos evaluando un prototipo de herramienta digital llamada 'Impulsa', diseñada para ayudar a organizar contactos y tareas de seguimiento comercial con pequeños negocios.*
->
-> *Queremos enfatizar que estamos evaluando la aplicación y sus decisiones de diseño, no a ti ni tus conocimientos. No hay respuestas correctas o incorrectas. Te pediremos que pienses en voz alta mientras navegas, compartiendo lo que buscas, lo que esperas encontrar y cualquier duda o confusión que surja.*
->
-> *¿Tienes alguna consulta antes de comenzar?"*
+Tarea complementaria: registra interés en una cuenta de ahorro para un emprendedor y explica qué datos solicita el formulario. No hay monto de financiamiento para ese producto. La prueba no debe simular una evaluación crediticia ni introducir datos reales, tasas o condiciones oficiales.
 
----
+## Preguntas posteriores
 
-## 3. Tareas Evaluadas en el Guion
+¿Qué esperabas que ocurriera? ¿Qué información te faltó? ¿Qué significó para ti mantener o cancelar una acción? ¿Qué vista usarías para organizar el trabajo y por qué?
 
-### Tarea 1: Registrar un nuevo contacto
-- **Consigna para el participante:**
-  *"Acabas de conversar con Carmen Ramos, dueña de 'Librería Escolar ABC'. Ella necesita financiamiento para surtir útiles escolares antes del inicio de clases y te conoció mediante una campaña. Registra este contacto en el sistema."*
-- **Qué observar:**
-  - ¿Localiza rápidamente el botón de registro?
-  - ¿Comprende qué campos son obligatorios y cuáles opcionales?
-  - ¿Surge alguna duda respecto a la categoría de producto o el origen?
+## Registro vacío
 
-### Tarea 2: Programar un seguimiento con fecha y acción
-- **Consigna para el participante:**
-  *"Durante la conversación con Carmen Ramos, acordaron que la llamarás el próximo martes a las 10:00 a.m. para revisar los requisitos del financiamiento. Programa este seguimiento en la ficha de Carmen."*
-- **Qué observar:**
-  - ¿Es claro cómo agendar la fecha y la acción?
-  - ¿Comprende la relación entre la acción textual y el selector de fecha?
-  - ¿Reconoce la confirmación visual de que la tarea fue agendada?
+Participante (código): ______  Fecha: ______  Dispositivo/ancho: ______
 
-### Tarea 3: Encontrar el contacto en el directorio
-- **Consigna para el participante:**
-  *"Imagina que pasaron dos días y necesitas revisar los datos de Carmen Ramos o de su negocio 'Librería Escolar ABC'. Encuentra su ficha desde el directorio de contactos."*
-- **Qué observar:**
-  - ¿Utiliza la barra de búsqueda o prefiere desplazarse manualmente?
-  - ¿Intenta buscar por el nombre de la persona o por el nombre comercial?
-  - ¿Comprende los filtros por etapa u origen disponibles?
+| Tarea | Finalización (sin ayuda / con ayuda / no) | Tiempo observado | Dificultad o error | Comentario textual | Evidencia |
+| --- | --- | --- | --- | --- | --- |
+| 1 | | | | | |
+| 2 | | | | | |
+| 3 | | | | | |
+| 4 | | | | | |
+| 5 | | | | | |
+| 6 | | | | | |
+| 7 | | | | | |
+| 8 | | | | | |
+| 9 | | | | | |
 
-### Tarea 4: Registrar el resultado de una conversación
-- **Consigna para el participante:**
-  *"Supongamos que ya llamaste a Carmen. Te confirmó que tiene los documentos listos pero solicitó que la visites este viernes para recogerlos. Registra las notas de esta llamada en el sistema y marca el seguimiento anterior como atendido."*
-- **Qué observar:**
-  - ¿Distingue el botón para registrar la nota de conversación del botón para reprogramar?
-  - ¿Identifica claramente el historial de notas pasadas frente a la próxima acción pendiente?
-
-### Tarea 5: Cambiar la etapa de la oportunidad comercial
-- **Consigna para el participante:**
-  *"Dado que Carmen demostró un interés firme y está lista para entregar documentos, actualiza el estado de su oportunidad comercial de 'Contactado' a 'Interesado'."*
-- **Qué observar:**
-  - ¿Comprende el concepto de etapas comerciales?
-  - ¿Le resulta intuitivo cambiar la etapa desde el selector accesible sin depender de arrastrar tarjetas?
-  - ¿Verifica el cambio reflejado en la interfaz?
-
----
-
-## 4. Plantilla de Registro de Observaciones (En blanco para futuras pruebas)
-
-Utilizar una copia de esta plantilla por cada participante evaluado.
-
-```markdown
-### Ficha de Participante: P[#]
-- **Fecha y hora:** [DD/MM/AAAA - 00:00]
-- **Dispositivo utilizado:** [ ] Computadora de escritorio  [ ] Teléfono móvil
-- **Experiencia en ventas/asesoría:** [ ] Menos de 1 año  [ ] 1 a 3 años  [ ] Más de 3 años
-- **Herramienta habitual previa:** [ ] Libreta física  [ ] WhatsApp  [ ] Excel  [ ] CRM formal
-
----
-
-#### Registro por Tarea
-
-| # | Tarea | Completada con éxito | Tiempo aprox. | Errores o bloqueos observados | Comentarios verbales del usuario |
-|---|-------|----------------------|---------------|-------------------------------|----------------------------------|
-| **1** | Registrar nuevo contacto | [ ] Sí<br>[ ] Con ayuda<br>[ ] No | __ min __ s | | |
-| **2** | Programar seguimiento | [ ] Sí<br>[ ] Con ayuda<br>[ ] No | __ min __ s | | |
-| **3** | Encontrar contacto | [ ] Sí<br>[ ] Con ayuda<br>[ ] No | __ min __ s | | |
-| **4** | Registrar conversación | [ ] Sí<br>[ ] Con ayuda<br>[ ] No | __ min __ s | | |
-| **5** | Cambiar etapa comercial | [ ] Sí<br>[ ] Con ayuda<br>[ ] No | __ min __ s | | |
-
----
-
-#### Preguntas de Cierre (Escala 1 a 5, donde 1 es muy difícil y 5 es muy fácil)
-1. *¿Qué tan fácil te pareció entender qué tareas tenías pendientes para hoy?* [ 1 | 2 | 3 | 4 | 5 ]
-2. *¿El vocabulario utilizado te resultó natural y acorde a tu labor?* [ 1 | 2 | 3 | 4 | 5 ]
-3. *¿Qué fue lo más confuso o frustrante durante el recorrido?*
-   - Respuesta: 
-4. *¿Qué elemento o dato consideras indispensable que no viste en la pantalla?*
-   - Respuesta: 
-
----
-
-#### Hallazgos y Mejoras Propuestas
-- **Oportunidad de mejora 1:**
-- **Oportunidad de mejora 2:**
-- **Oportunidad de mejora 3:**
-```
-
+No completar esta tabla con estimaciones del agente. Separar observación, interpretación y propuesta. Después de observar, priorizar problemas por su efecto en la tarea y documentar cambios sin extrapolar a resultados de ventas.

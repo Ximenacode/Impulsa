@@ -1,69 +1,87 @@
-# Resultados, Comprobaciones y Mejoras Pendientes — Impulsa
+# Resultados técnicos y mejoras
 
-Este documento detalla las comprobaciones técnicas ejecutadas, los cambios implementados durante el rediseño y la estructura metodológica reservada para los hallazgos de futuras pruebas con usuarios reales.
+## Implementación
 
----
+Impulsa apoya a un asesor de una entidad financiera en la captación y seguimiento comercial de posibles clientes, especialmente pequeños negocios. Se conserva el recorrido, teléfono, Kanban, Agenda e historial. El sistema vigente sigue la referencia entregada: navegación blanca compacta, fondo piedra, acciones carbón y acentos salvia/lavanda/arena. Las paletas azul/turquesa y cálida/verde anteriores quedan como iteraciones históricas.
 
-## 1. Comprobaciones Técnicas Realmente Ejecutadas
+El esquema actual es v3. La migración desde v1/v2 conserva IDs, fechas, relaciones, historial, textos e importes y clasifica los productos anteriores como sin clasificar. No interpreta esos importes como solicitudes ni los muestra en indicadores financieros. La lectura no escribe. La opción Cargar demostración financiera reemplaza los registros solo tras confirmación; cancelar conserva el valor guardado. Véase [enfoque-financiero.md](enfoque-financiero.md).
 
-En cumplimiento del rigor técnico y la verificación previa al despliegue, se llevaron a cabo las siguientes pruebas sobre el código de la aplicación:
+## Comprobaciones técnicas
 
-### 1.1. Compilación y Tipado Estricto
-- **Comprobación:** Ejecución de `tsc -b && vite build`.
-- **Resultado:** Compilación exitosa en 0 errores de TypeScript (`noUnusedLocals`, `noUnusedParameters`, `strict: true`) y generación óptima del bundle de producción en la carpeta `dist/`.
+**Revisión vigente de la referencia cálida:** **41 pruebas aprobadas en 3 suites**, TypeScript y compilación de producción aprobados. Incluye el recorrido existente, carga completa, conservación del almacenamiento, fechas españolas, corrección confirmada de acciones, selección de urgentes y agenda semanal. Evidencia: [test-results-referencia-calida.json](test-results-referencia-calida.json). Implementación y límites: [referencia-calida.md](referencia-calida.md). La revisión visual en navegador quedó pendiente: el host no estaba disponible y el acceso alternativo no pudo verificar la URL. El servidor local entrega la versión actualizada con HTTP 200.
 
-### 1.2. Persistencia en Almacenamiento Local (localStorage)
-- **Comprobación:** Creación de un nuevo contacto, registro de seguimiento con notas, cambio de etapa comercial y recarga de página (F5).
-- **Resultado:** Los cambios se conservan íntegramente en la clave `impulsa_contactos_v1`. El botón "Restablecer demo" borra correctamente las modificaciones y recarga los 8 contactos semilla iniciales.
+**Iteración azul/turquesa anterior:** 40 pruebas aprobadas en 3 suites. Evidencia histórica: [test-results-diseno-azul.json](test-results-diseno-azul.json) y [rediseno-azul-turquesa.md](rediseno-azul-turquesa.md).
 
-### 1.3. Manejo de Fechas sin Desfase Horario
-- **Comprobación:** Almacenamiento de fechas en formato ISO local (`YYYY-MM-DD`) y cálculo de diferencias en días mediante componentes año/mes/día locales.
-- **Resultado:** La fecha asignada a una tarea (ej. "2026-11-08") no se desplaza al día anterior o posterior por efectos de conversión horaria UTC de JavaScript.
+**Revisión anterior de la carga completa:** 36 pruebas aprobadas en 3 suites, TypeScript y compilación de producción aprobados. Se verificaron los casos de Ana/Luis/Rosa/José, relaciones, reemplazo de historial, cancelación, fallo y reintento del guardado y los cinco módulos después de cargar y reconstruir la sesión. Evidencia histórica: [test-results-carga-demo.json](test-results-carga-demo.json). Alcance: [verificacion-carga-demo.md](verificacion-carga-demo.md).
 
-### 1.4. Verificación de Vistas Responsivas (Breakpoints)
-- **Escritorio amplio (~1440 px):** Barra lateral fija de 240 px, ancho de lectura cómodo acotado (`max-w-5xl`), tabla estructurada en Contactos, tablero de 5 columnas en Oportunidades y tarjetas de 2 columnas en Mi día.
-- **Tableta (~768 px):** Transición fluida con ajuste de márgenes a 24 px y adaptabilidad de formularios en rejilla de 2 columnas.
-- **Móvil (~390 px):** Una columna de contenido, márgenes de 16 px, navegación inferior fija con altura táctil cómoda (48 px), selector de etapa desplegable en Oportunidades y ausencia total de desplazamiento horizontal indeseado.
+**Primera corrección financiera:** 34 pruebas aprobadas en 2 suites, TypeScript sin errores y compilación de producción aprobada. La evidencia histórica está en [test-results-financiero.json](test-results-financiero.json); el detalle de migración y semántica comercial está en [enfoque-financiero.md](enfoque-financiero.md). Las ejecuciones que siguen documentan las iteraciones anteriores.
 
-### 1.5. Accesibilidad Operativa (Teclado y Foco)
-- **Comprobación:** Navegación por la interfaz utilizando únicamente las teclas `Tab`, `Shift + Tab`, `Enter` y `Escape`.
-- **Resultado:** Todos los botones, campos de texto, selectores y enlaces cuentan con indicador de foco visible (`outline: 2px solid #145965`). Los diálogos modales se cierran inmediatamente al presionar la tecla `Escape`.
+- Pruebas de etapa 2: **30 aprobadas, 2 suites, 0 fallos**. Comando: `npm test -- --watchAll=false --runInBand --json --outputFile=docs/test-results-etapa-2.json`. Evidencia en [test-results-etapa-2.json](test-results-etapa-2.json).
+- TypeScript: `tsc --noEmit` aprobado, sin errores.
+- Servidor de desarrollo: compilado correctamente y HTTP 200 en el puerto 3001.
+- Dependencias: `npm ls --depth=0` terminó con código 0. Se preservaron tres paquetes extra ya presentes (`bindings`, `file-uri-to-path`, `nan`); no se instaló ni actualizó ningún paquete.
+- Enlaces Markdown locales: revisados, sin destinos inexistentes. Se corrigió la ruta relativa de la copia del README recibido.
+- `git diff --check`: sin errores de espacios; quedan únicamente avisos del equipo sobre conversión LF → CRLF.
+- Compilación de producción: `npm run build` **aprobado**, código 0, con el ajuste final de contraste incluido en `build/`. No hay advertencias de aplicación; la herramienta antigua emite el aviso de Node sobre `fs.F_OK`.
 
----
+`test-results.json` y `ETAPA-1.md` corresponden a la primera etapa. Una primera ejecución de interacción de etapa 2 encontró una consulta de prueba que incluía la tabla oculta detrás del modal; se acotó al diálogo. La ejecución final de las 30 pruebas concluyó con código 0.
 
-## 2. Resumen de Cambios del Rediseño Visual
+Las comprobaciones cubren el recorrido comercial existente y añaden conservación de datos al migrar, teléfono, agrupación/cambio de etapa del Kanban, arrastre con revisión y selección coherente en Mi día. No son pruebas con usuarios.
 
-| Área de Interfaz | Estado Previo | Rediseño Implementado | Propósito UX |
-|------------------|---------------|-----------------------|--------------|
-| **Llamado a la acción principal** | 3 botones "Nuevo contacto" duplicados en distintas zonas de la pantalla | Un solo botón principal consistente ubicado en el encabezado de página | Eliminar la competencia visual y clarificar la acción prioritaria |
-| **Identidad y Aviso Demo** | Franja superior invasiva con texto extenso sobre localStorage | Emblema geométrico sutil y pastilla interactiva "Demo" con diálogo modal accesible | Despejar el área superior de trabajo y mantener la transparencia |
-| **Pantalla "Mi día"** | Lista genérica con métricas coloreadas | Encabezado con fecha en español, 3 métricas neutrales compactas y secciones priorizadas (*Requieren atención*, *Para hoy*, *Próximos*) | Ordenar el inicio de jornada según el riesgo de pérdida del cliente |
-| **Tratamiento de Vencidos** | Fondos y bordes rojos extensos alrededor de toda la tarjeta | Etiqueta de fecha en tono vino/rojo suave (`Hace 2 días`) y punto indicador discreto | Reducir la ansiedad visual manteniendo la información clara y tranquila |
-| **Directorio de Contactos** | Tarjetas repetidas en escritorio | Tabla de datos estructurada con escaneo vertical ágil en escritorio y tarjetas en móvil | Optimizar el uso del espacio y la velocidad de lectura |
-| **Tablero de Oportunidades** | Columnas comprimidas en móvil con desplazamiento horizontal | Selector de etapa desplegable en móvil que muestra la lista completa de tarjetas | Evitar desplazamientos horizontales incómodos en pantallas táctiles |
-| **Restablecer Demo** | Botón en franja superior | Ubicado al pie de la barra lateral de escritorio y en menú de móvil | Dejar el control secundario en una zona de utilidades sin restar espacio comercial |
+También se probó la variante móvil mediante `matchMedia` en jsdom: lista de oportunidades por defecto y detalle de Mi día en diálogo. Esto verifica comportamiento condicionado por ancho; no mide desbordamientos ni composición visual real.
 
----
+## Contraste calculado
 
-## 3. Aspectos e Hipótesis Pendientes de Validar con Usuarios
+`node scripts/check-contrast.cjs`: **11 combinaciones aprobadas** del sistema cálido vigente. El informe [contraste.json](contraste.json) contiene colores, cociente y umbral utilizado.
 
-> [!IMPORTANT]
-> **Aviso de ética de investigación:**  
-> Los siguientes puntos no representan conclusiones de pruebas ya ejecutadas, sino el backlog de hipótesis que la diseñadora someterá a evaluación en sesiones de usabilidad:
+| Combinación | Cociente |
+| --- | --- |
+| Texto principal / blanco | 14.68:1 |
+| Texto secundario / fondo | 4.77:1 |
+| Texto secundario / blanco | 5.59:1 |
+| Blanco / acción carbón | 13.98:1 |
+| Texto blanco / hover de acción | 9.44:1 |
+| Blanco / navegación activa | 14.68:1 |
+| Texto activo / salvia suave | 5.57:1 |
+| Texto de error / fondo de error | 5.59:1 |
+| Foco / fondo | 5.69:1 |
+| Borde de campo / blanco | 3.49:1 |
+| Barra / blanco | 3.60:1 |
 
-1. **Eficiencia del inicio del día:** Validar si los asesores identifican inmediatamente a quién contactar en los primeros 15 segundos al abrir la aplicación.
-2. **Suficiencia de campos de captación:** Observar si la ausencia de campos como número telefónico o dirección en la captación rápida genera fricción en escenarios reales de campo.
-3. **Comprensión del selector de etapas móvil:** Evaluar si los usuarios prefieren el selector desplegable por etapa frente a un deslizamiento horizontal tipo carrusel.
-4. **Claridad de la bitácora:** Verificar si el asesor distingue claramente entre dejar una nota de lo conversado (historial) y programar una próxima acción futura.
+Se usa 4.5:1 como umbral para texto y 3:1 para los elementos gráficos/foco revisados. El borde de los campos es #868B80 y la acción carbón usa texto blanco. Se conservan bordes decorativos discretos. Es una auditoría de estas combinaciones, no una certificación completa de accesibilidad.
 
----
+## Problemas abordados
 
-## 4. Matriz de Registro para Pruebas Futuras (Plantilla en blanco)
+### Revisión del lenguaje anterior — registro histórico
 
-```markdown
-| Participante | Tarea 1: Registro | Tarea 2: Seguimiento | Tarea 3: Búsqueda | Tarea 4: Nota conversada | Tarea 5: Cambio etapa | Observaciones generales |
-|--------------|-------------------|----------------------|-------------------|--------------------------|-----------------------|-------------------------|
-| P1           | [ ] Éxito [ ] Duda| [ ] Éxito [ ] Duda   | [ ] Éxito [ ] Duda| [ ] Éxito [ ] Duda       | [ ] Éxito [ ] Duda    |                         |
-| P2           | [ ] Éxito [ ] Duda| [ ] Éxito [ ] Duda   | [ ] Éxito [ ] Duda| [ ] Éxito [ ] Duda       | [ ] Éxito [ ] Duda    |                         |
-| P3           | [ ] Éxito [ ] Duda| [ ] Éxito [ ] Duda   | [ ] Éxito [ ] Duda| [ ] Éxito [ ] Duda       | [ ] Éxito [ ] Duda    |                         |
-```
+Se simplificaron términos en una iteración anterior, pero esa corrección conservaba un enfoque de servicios que no correspondía al producto financiero. Esta iteración quedó superada por la corrección comercial: sus ejemplos ya no son la semilla vigente y sus definiciones extensas se retiraron de las tarjetas.
+
+Evidencia histórica de aquella iteración: [test-results-lenguaje.json](test-results-lenguaje.json), 31 pruebas aprobadas con esquema v2. No se realizaron pruebas con usuarios. La evidencia vigente de la corrección financiera se encuentra en [test-results-financiero.json](test-results-financiero.json).
+
+- Ausencia del número de contacto y del tablero solicitados: incorporados sin backend ni nuevas dependencias.
+- Información permanente y actividad mezcladas en ficha: separadas por secciones; se incorpora historial de todas las oportunidades del contacto.
+- Lista de Mi día con varias acciones por tarjeta: se reduce a consulta y un panel de preparación.
+- Errores de almacenamiento que se podían ocultar al abrir otro formulario: permanecen visibles hasta un guardado correcto o recarga.
+- Importación global de la biblioteca de iconos: sustituida por importaciones individuales para evitar trabajo innecesario en las herramientas.
+
+## Límites y próximos pasos
+
+El host de acceso al navegador no estaba disponible. Se implementaron reglas para escritorio, 768 px y móvil, pero faltan capturas e inspección visual real en 1440/768/390 px. Las pruebas de teclado de jsdom no sustituyen una revisión completa con lector de pantalla o navegador. El arrastre simulado no demuestra compatibilidad táctil: en móvil se ofrece lista y controles de formulario.
+
+La pila original es antigua; se conserva por alcance. localStorage no ofrece copias de seguridad, sincronización entre equipos ni transacciones multiusuario. La app usa únicamente datos ficticios. No se ha desplegado ni publicado.
+
+## Validación con usuarios
+
+Pendiente. No se realizaron entrevistas, sesiones, testimonios ni mediciones de mejora. No se atribuyen resultados de negocio a esta adaptación. Véase el [plan de prueba](plan-de-prueba.md).
+
+## Contribución personal — por completar por la diseñadora
+
+- Qué decidí personalmente:
+- Qué revisé de la propuesta asistida por IA:
+- Qué modifiqué después de revisarla:
+- Evidencias propias que quiero incorporar:
+- Qué aprendí:
+
+## Asistencia de IA
+
+Codex asistió en inspección del código, implementación, propuesta visual, pruebas técnicas y redacción inicial de estos documentos a partir de las instrucciones. La diseñadora debe revisar el contenido y completar su contribución personal antes de presentarlo en portafolio. No se asume autoría propia del proyecto original ni actividades de investigación no confirmadas.

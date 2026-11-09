@@ -1,190 +1,131 @@
-# Impulsa — Seguimiento Comercial para Asesores de Negocio
+# Impulsa
 
-> **Proyecto personal de práctica para portafolio UX/UI**  
-> Diseñado y estructurado con asistencia de Inteligencia Artificial como base de trabajo, sujeto a revisión, iteración y validación por parte de la diseñadora de producto.
+**Captación y seguimiento comercial de productos financieros.**
 
----
+Adaptación personal de práctica, realizada con asistencia de IA, del [proyecto crm-with-leads de Mihail Nesterov (mihailnesterov)](https://github.com/mihailnesterov/crm-with-leads). Se conservan LICENSE (GPL-3.0), las atribuciones y los avisos de terceros. El código original no se presenta como autoría de la diseñadora. La descripción recibida se conserva en [docs/README-recibido.md](docs/README-recibido.md).
 
-## 📌 Resumen del Proyecto
+## Problema y usuario propuestos
 
-**Impulsa** es un prototipo de aplicación web orientada a asesores de negocios y microfinanzas que atienden a pequeños emprendedores (bodegas, panaderías, talleres, ferreterías, etc.).
+Impulsa apoya a un asesor de una entidad financiera que capta y da seguimiento a posibles clientes, especialmente pequeños negocios en Perú. Distingue la necesidad financiera del cliente, el producto de interés y la próxima acción del asesor. La propuesta de experiencia es una hipótesis del encargo; no se realizaron entrevistas, pruebas con usuarios ni mediciones de impacto comercial.
 
-Su propósito es resolver una necesidad comercial cotidiana: **organizar contactos dispersos y transformar el interés de un cliente potencial en una próxima acción concreta.**
+Los ejemplos usan categorías generales: financiamiento para capital de trabajo, financiamiento para maquinaria, cuenta de ahorro y cuenta para gestionar ingresos del negocio. No son productos oficiales de Caja Trujillo ni de otra entidad. No se inventan tasas, comisiones, requisitos ni promociones.
 
-> *“Organiza tus contactos y convierte el interés en una próxima acción.”*
+El recorrido implementado es: **registrar contacto → crear oportunidad → programar seguimiento → registrar resultado → definir otra acción o cerrar**.
 
-Al iniciar su jornada laboral, el asesor debe poder responder con claridad:
-1. **¿A quién debo contactar hoy?**
-2. **¿Qué necesita esa persona?**
-3. **¿Qué conversamos anteriormente?**
-4. **¿Cuál es la próxima acción acordada?**
+## Base original / Cambios de esta versión
 
----
+| Base original | Cambios de esta versión |
+| --- | --- |
+| Manager, módulos de clientes/contactos, ventas, leads y tareas | Impulsa: Mi día, Contactos, Oportunidades, Agenda y Resultados |
+| Tarjetas y datos de demostración independientes | Registros vinculados e indicadores calculados |
+| Datos rusos, rublos y periodos de 2021 | Pequeños negocios ficticios, PEN, español es-PE y fechas relativas a la primera carga |
+| Formularios sin persistencia del recorrido completo | Guardado local, validación y recuperación explícita ante datos inválidos |
+| Tablero de tareas estático | Kanban de oportunidades con seis etapas, conteos y próxima acción |
+| Perfil/foto original y avisos automáticos | Asesor de demostración con iniciales y confirmaciones después de acciones |
+| Presentación azul de Material UI | Fondo cálido, navegación blanca compacta, acciones carbón, acentos salvia/lavanda y paneles con jerarquía común |
 
-## 🎯 Problema e Hipótesis Inicial
+## Funcionalidades
 
-> [!IMPORTANT]
-> **Aviso de transparencia metodológica:**  
-> Este proyecto parte de una **hipótesis de trabajo inicial** basada en la observación del flujo de captación comercial. **No constituye el resultado de una investigación de campo ni de entrevistas concluidas.**
+- **Mi día:** indicadores compactos de hoy, vencidos y oportunidades abiertas; urgentes y prioridades en columnas, resumen de las seis etapas a la derecha y detalle al seleccionar. Debajo, agenda semanal de contactos y actividad reciente. Pestañas, búsqueda y registro de resultado; en móvil el detalle se abre en diálogo. La agenda muestra fechas reales, sin asignar horas inventadas.
+- **Contactos:** alta, edición, búsqueda, origen, número opcional visible en listado y ficha, oportunidades e historial relacionados.
+- **Oportunidades:** Kanban de seis etapas y lista filtrable; necesidad financiera, producto de interés y próxima acción del asesor. **Monto solicitado** aparece solo para financiamiento y no representa aprobación ni desembolso. Las cuentas no muestran monto. El botón de cambio de etapa permite operar con teclado; arrastrar abre el mismo formulario antes de guardar.
+- **Seguimientos:** programar, editar, reprogramar, completar con resultado/notas y próxima decisión, o cancelar con confirmación.
+- **Cierres:** fecha, motivo de pérdida y explicación para Otro; decisión obligatoria sobre pendientes. **Propuesta enviada** significa información comercial compartida. **Ganado** es un cierre comercial registrado en la demo: no implica aprobación automática ni desembolso. No hay evaluación crediticia. Reapertura coherente y actividad real.
+- **Agenda:** calendario mensual localizado, lista accesible y filtro por fecha, sin inventar horas.
+- **Resultados:** contactos por origen, oportunidades por etapa, ganadas/perdidas, abiertas, motivos de pérdida y ganadas por origen. Conversión = ganadas / (ganadas + perdidas) × 100; cuenta cierres comerciales de la demo, no aprobaciones. No se suman montos como ventas o ingresos del banco. Sin cierres se indica expresamente. No hay filtro de periodo ni predicciones.
 
-### La hipótesis:
-Un asesor suele recopilar prospectos en visitas a campo, ferias o por recomendaciones. Sin una herramienta ágil y enfocada:
-- Los datos y acuerdos quedan dispersos en libretas físicas o chats personales.
-- Se olvidan fechas acordadas para llamadas o visitas.
-- Se pierde el contexto de las necesidades del emprendedor entre una interacción y otra.
-- No se define una próxima acción con fecha, por lo que el interés se diluye.
+Los números de la semilla (`000 000 001` y similares) son marcadores ficticios sin uso operativo. No hay llamadas ni envíos. Usa solo datos ficticios.
 
-*Nota:* Impulsa busca apoyar la organización y el seguimiento personal del asesor. No se afirma ni se asume que incremente las ventas sin pruebas de campo reales.
+## Tecnologías y requisitos
 
----
+Se conservan React 17, TypeScript 4, React Router 5, Redux, Material UI 4, Material UI Icons, Roboto local y DevExpress Scheduler. No se añadieron paquetes. La compatibilidad con Node moderno se aplica dentro del proceso de CRA 4 / Webpack 4 mediante `scripts/run-cra.cjs`.
 
-## 👤 Usuario Objetivo (Proto-Persona)
+Entorno utilizado: Windows, PowerShell y Node **24.12.0**, con las dependencias existentes del proyecto. npm es el gestor correspondiente a `package-lock.json`. Arranque, pruebas y compilación se comprueban en este entorno; no se repitió una instalación limpia.
 
-- **Rol:** Asesor de negocios / microfinanzas enfocado en pequeños emprendedores.
-- **Contexto:** Trabajo híbrido entre visitas presenciales de campo y gestión de oficina/teléfono.
-- **Necesidad:** Capturar prospectos en menos de un minuto, revisar compromisos del día sin perderse en menús complejos y mantener un registro histórico claro de acuerdos.
+## Instalación y ejecución
 
----
+Desde la carpeta del repositorio:
 
-## 🎨 Sistema y Dirección Visual
+```powershell
+npm ci
+npm start
+```
 
-El rediseño visual de Impulsa se construyó bajo un enfoque **elegante, cercano y contemporáneo**, con composición equilibrada y detalles cuidados:
+Si las dependencias ya están instaladas, basta `npm start`. Abre la URL que indique la consola, normalmente **http://localhost:3000**. Si está ocupado:
 
-- **Paleta de Color:**
-  - Verde petróleo principal: `#145965` (marca, botones principales, foco visible).
-  - Verde petróleo oscuro: `#103E46` (estados hover y active).
-  - Fondo general: `#F5F7F8` (superficie base luminosa y descansada).
-  - Superficies: `#FFFFFF` (tarjetas, paneles y modales).
-  - Texto principal: `#172B35` (contraste óptimo 13:1).
-  - Texto secundario: `#526571` (subtítulos y metadatos, contraste 5.3:1).
-  - Bordes suaves: `#DFE7EB` (delimitadores sutiles).
-  - Acento cálido: `#E5AF63` (utilizado con moderación en estados clave).
-- **Tipografía:** Familia **Inter** con escala jerárquica clara (Display, H1, H2, H3, Body y Micro).
-- **Identidad de Marca:** Emblema geométrico sutil y etiqueta interactiva **"Demo"** con diálogo explicativo accesible (se retiró la franja invasiva superior).
-- **Botones deduplicados:** Una sola acción primaria visible por pantalla (*"Nuevo contacto"*), situada de manera predecible en el encabezado de cada sección.
-- **Controles secundarios:** La acción *"Restablecer demo"* se reubicó en la parte inferior de la barra lateral, conservando su diálogo de confirmación.
+```powershell
+$env:PORT = '3001'
+npm start
+```
 
----
+Desde la carpeta de trabajo compartida, primero usa `cd crm-with-leads`. Para detener el servidor, Ctrl+C.
 
-## 🛠️ Alcance de mi Participación en UX/UI
+```powershell
+npm test -- --watchAll=false --runInBand
+.\node_modules\.bin\tsc.cmd --noEmit
+npm run build
+node scripts/check-contrast.cjs
+```
 
-*Este apartado define el rol y los puntos clave para revisión y ajuste personal:*
-- **Definición de hipótesis y enfoque:** Planteamiento del problema comercial y delimitación de supuestos.
-- **Estructuración del flujo:** Diseño del recorrido principal (Mi día → Captura rápida → Detalle contextualizado → Registro de interacción).
-- **Decisiones de interfaz y accesibilidad:** Jerarquía visual, contraste cromático institucional, formularios con etiquetas visibles, navegación operable por teclado y adaptación móvil táctil (mínimo 44 px).
-- **Preparación de instrumentos de prueba:** Diseño del guion de pruebas de usabilidad y de la matriz de evaluación para futuras sesiones con usuarios reales.
-- **Revisión y personalización:** Ajuste continuo del código y los flujos generados con asistencia de IA para adecuarlos a mis criterios de diseño.
+`npm run build` genera `build/`; no publica la aplicación. No se hicieron commits, push, despliegue ni publicación. El registro técnico final se encuentra en [resultados-y-mejoras.md](docs/resultados-y-mejoras.md).
 
----
+## Persistencia y conservación de datos
 
-## 📂 Documentación UX/UI en la Carpeta `/docs`
+Los cambios se guardan únicamente en `localStorage`, bajo la clave estable `impulsa.crm.v1`. El esquema actual es **versión 3**. La migración v1 → v2 añade teléfono vacío; v2 → v3 marca los productos anteriores como **sin clasificar**, conservando sus textos e importes sin interpretarlos como financiamiento. Se mantienen IDs, fechas, relaciones e historial. La lectura no escribe ni carga otra semilla.
 
-Puedes consultar el desglose detallado del proceso en los siguientes documentos:
+### Cargar los ejemplos financieros
 
-1. [**Problema y Alcance**](docs/problema-y-alcance.md): Justificación del problema comercial, objetivos, alcance real de la versión 1.0 y limitaciones.
-2. [**Perfil de Usuario y Supuestos**](docs/usuario-y-supuestos.md): Proto-persona de asesor comercial, escenario ilustrativo y matriz de supuestos pendientes de validar.
-3. [**Flujo Principal de Usuario**](docs/flujo-principal.md): Diagrama en Mermaid y descripción paso a paso del ciclo de captación y seguimiento.
-4. [**Decisiones de Diseño y Accesibilidad**](docs/decisiones-de-diseno.md): Sistema visual completo, tokens, razones de cambios, accesibilidad WCAG AA y wireframes esquemáticos.
-5. [**Plan y Guion de Pruebas de Usabilidad**](docs/plan-de-prueba.md): Guion estructurado con 5 tareas clave y plantilla de registro en blanco para moderador.
-6. [**Resultados y Mejoras Pendientes**](docs/resultados-y-mejoras.md): Comprobaciones técnicas ejecutadas, cambios de rediseño y aspectos pendientes de validar con usuarios.
+Usa **Cargar demostración financiera** en la barra lateral, en el aviso de registros anteriores o dentro de **Demo** en móvil. Se explica que reemplazará todos los registros de Impulsa y se solicita confirmación. Cancelar conserva el almacenamiento exactamente como estaba. No se carga automáticamente sobre datos existentes.
 
----
+Al confirmar se reemplazan juntos contactos, oportunidades, seguimientos y actividad anterior. El estado visible cambia solo después de guardar; si el almacenamiento falla, la confirmación muestra el error y conserva el conjunto anterior. Los datos nuevos permanecen al volver a cargar la sesión. La actividad reciente registra únicamente la carga que acabas de realizar; el historial de seguimientos incluye un caso financiero ficticio realizado.
 
-## 💻 Tecnologías Utilizadas
+Los cuatro casos principales de esta demo son:
 
-- **React 19** con **TypeScript** (tipado estricto `noUnusedLocals`, `strict: true`)
-- **Vite** para desarrollo y empaquetado rápido (con ruta base relativa para despliegue directo en GitHub Pages)
-- **Tailwind CSS** con tokens de diseño personalizados
-- **Lucide React** para iconografía semántica consistente
-- **Almacenamiento:** `localStorage` del navegador (sin backend externo)
+| Contacto | Necesidad | Oportunidad | Próxima acción |
+| --- | --- | --- | --- |
+| Ana R. · Bodega Los Sauces | Comprar mercadería | Financiamiento de capital de trabajo | Confirmar monto y destino del financiamiento |
+| Luis M. · Cafetería La Esquina | Separar sus ahorros personales del dinero del negocio | Cuenta de ahorro | Conversar sobre sus necesidades de ahorro |
+| Rosa C. · Taller Buen Camino | Adquirir maquinaria | Financiamiento para equipo | Confirmar monto y destino del financiamiento |
+| José P. · Comercio Sol Andino | Organizar los ingresos de su negocio | Cuenta para gestionar ingresos | Explicar información general y confirmar su interés |
 
----
+Se mantienen dos casos de apoyo, Elena V. y Marco T., para mostrar cierres comerciales Ganado y Perdido; no representan aprobaciones. En la nueva demo no aparece la advertencia de producto anterior sin clasificar.
 
-## ✨ Funcionalidades Implementadas
+Ana y Rosa ya tienen un monto solicitado; su próxima acción es confirmarlo junto al destino. Para datos guardados de demostraciones anteriores, el aviso **Revisar próximas acciones** muestra el texto guardado y la propuesta. Solo **Confirmar actualización** modifica las acciones pendientes reconocidas de la demo con monto registrado; conserva fechas, estados, relaciones y acciones personalizadas. Cancelar no escribe. No es necesario reemplazar la base con otra demo para hacer esta corrección. Los formularios también ofrecen **Usar esta acción**; nunca sustituyen lo escrito automáticamente.
 
-1. **Pantalla "Mi día" (Centro de trabajo):**
-   - Fecha actual en español en el encabezado.
-   - Resumen cuantitativo compacto con superficies neutras: *Vencidos*, *Para hoy* y *Próximos días*.
-   - Secciones priorizadas con contadores: *Requieren atención*, *Para hoy* y *Próximos seguimientos*.
-   - Tarjetas de contacto rediseñadas con iniciales en avatar, bloque destacado de *Próxima acción* y botón directo *“Registrar seguimiento”*.
-   - Tratamiento de vencidos con tono vino/rojo suave en la etiqueta temporal (`Hace 2 días`), evitando fondos rojos extensos.
-2. **Directorio de Contactos:**
-   - Búsqueda en tiempo real por nombre de contacto o nombre del negocio.
-   - Filtros ordenados por etapa comercial y canal de origen (visita, referido, campaña).
-   - Tabla estructurada legible en escritorio y presentación en tarjetas apiladas en móvil.
-3. **Ficha de Detalle del Contacto:**
-   - Separación visual nítida en 3 bloques: Información general, **Próxima acción pendiente** (futuro) e **Historial de conversaciones** (pasado).
-   - Edición rápida de datos generales y cambio accesible de etapa comercial.
-   - Capacidad de marcar un seguimiento como atendido, reprogramarlo o registrar una nueva nota.
-4. **Tablero de Oportunidades:**
-   - Cinco etapas comerciales: *Nuevo*, *Contactado*, *Interesado*, *Cerrado con venta*, *Cerrado sin venta*.
-   - Tablero de 5 columnas en escritorio y **selector de etapa adaptable en móvil** para evitar desplazamiento horizontal excesivo.
-   - Al cerrar sin venta: registro opcional del motivo de descarte.
-   - Al cerrar con seguimiento pendiente: confirmación guiada para completar o conservar el recordatorio.
-5. **Panel de Resultados y Conversión:**
-   - Métricas de demostración: Total de prospectos, Cierres con venta y Tasa de Conversión `(Cerrados con venta / Total) × 100`.
-   - Barras de progreso simples para comparar distribución por etapa y origen.
-   - Identificación explícita de datos como demostrativos.
-6. **Manejo de Datos y Resiliencia:**
-   - 8 contactos iniciales con fechas relativas dinámicas al día actual.
-   - Manejo seguro de fechas en formato ISO local (`YYYY-MM-DD`) para prevenir desfases de zona horaria UTC.
-   - Botón de confirmación para **Restablecer datos de demostración**.
+Puedes seguir consultando y editando registros anteriores. Si eliges una categoría financiera en una oportunidad anterior, el formulario advierte que reemplazará su producto e importe al guardar; el importe previo no se reutiliza como monto solicitado. No se eliminan ni convierten silenciosamente precios de la versión anterior.
 
----
+La lectura migrada no reemplaza el almacenamiento: el esquema actualizado se escribe en la siguiente acción guardada. Se valida antes de aceptar los registros. Datos dañados o versiones desconocidas se bloquean y se informa del problema; el restablecimiento requiere confirmación. Un fallo de guardado conserva lo escrito. Los cambios detectados en otra pestaña requieren recargar y no se pisan deliberadamente.
 
-## ⚠️ Limitaciones y Manejo de Datos
+La semilla se genera una sola vez. Fechas sin hora usan `YYYY-MM-DD`, día comercial `America/Lima`, formato es-PE e importes PEN. La presentación es **Domingo, 8 de noviembre de 2026**; la actividad añade hora de 24 horas. Borrar los datos del navegador elimina los cambios; no hay sincronización ni copia de seguridad. No ingreses información personal real.
 
-- **Datos 100% ficticios:** Ningún contacto, teléfono o negocio corresponde a personas reales.
-- **Almacenamiento local exclusivo:** Todos los datos se almacenan en el `localStorage` del navegador. No se transmiten a servidores externos ni son aptos para datos bancarios, documentos de identidad o información sensible.
-- **Relación 1 a 1:** Cada contacto posee una única oportunidad comercial activa en esta primera versión.
+## Estructura
 
----
+`src/impulsa/`: modelo y transiciones (`model.ts`), persistencia, textos, tema y tokens, páginas, fichas/formularios, Kanban, panel Próximo paso y calendario. `src/store/store.ts` conserva la sesión compartida en Redux. `src/App.tsx` mantiene el punto de entrada.
 
-## 🤖 Declaración de Asistencia de Inteligencia Artificial
+Los archivos CanvasJS recibidos se conservan con sus avisos, pero no se importan al bundle. Los gráficos actuales usan HTML/CSS y valores reales del prototipo. Consulta [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
 
-En cumplimiento con las buenas prácticas de transparencia académica y profesional:
-- La arquitectura técnica inicial, la redacción base de los documentos y el código de los componentes en React/TypeScript fueron generados con asistencia de modelos de IA (Google Antigravity), siguiendo las directrices, requerimientos y supervisión de la diseñadora de producto.
-- Este prototipo constituye un punto de partida funcional sujeto a revisión crítica, ajustes visuales, pruebas de usabilidad con usuarios y mejoras continuas por parte de la autora.
+## Caso de estudio y evidencia
 
----
+El diseño vigente basado en la referencia recibida se documenta en [Interfaz cálida y compacta](docs/referencia-calida.md). La [iteración azul y turquesa](docs/rediseno-azul-turquesa.md) se conserva como registro anterior. El contexto comercial se documenta en [Enfoque comercial financiero](docs/enfoque-financiero.md).
 
-## 🚀 Instalación y Ejecución Local
+El diagnóstico de los datos antiguos y la verificación completa del botón, los cinco módulos y la persistencia están en [Verificación de la carga de demostración](docs/verificacion-carga-demo.md).
 
-### Prerrequisitos
-- Tener instalado [Node.js](https://nodejs.org/) (versión 18 o superior).
+- [Problema y alcance](docs/problema-y-alcance.md)
+- [Usuario y supuestos](docs/usuario-y-supuestos.md)
+- [Revisión inicial](docs/revision-inicial.md)
+- [Flujo principal](docs/flujo-principal.md)
+- [Decisiones de diseño](docs/decisiones-de-diseno.md)
+- [Antes y después](docs/antes-y-despues.md)
+- [Plan de prueba de usabilidad — sin ejecutar](docs/plan-de-prueba.md)
+- [Resultados técnicos y mejoras](docs/resultados-y-mejoras.md)
+- [Registro de etapa 1](docs/ETAPA-1.md) y [guía histórica de etapa 1](README-IMPULSA.md)
 
-### Pasos
-1. Clonar o descargar el repositorio:
-   ```bash
-   git clone <URL_DE_TU_REPOSITORIO>
-   cd <NOMBRE_DE_CARPETA>
-   ```
+## Capturas y limitaciones
 
-2. Instalar dependencias:
-   ```bash
-   npm install
-   ```
+No se obtuvieron capturas verificadas del rediseño: el host del navegador no estaba disponible y el acceso alternativo se detuvo al no poder verificar la URL. No hay imágenes simuladas. La inspección visual real en 1440/768/390 px y la revisión con tecnologías de asistencia quedan pendientes, aunque se implementaron reglas adaptables y se comprueba comportamiento de componentes en jsdom.
 
-3. Iniciar el servidor de desarrollo local:
-   ```bash
-   npm run dev
-   ```
+Esta demo no es un sistema de producción. No incorpora backend, autenticación, IA dentro del producto, integraciones, llamadas, mensajes, analítica, evaluación crediticia ni decisiones de aprobación. No representa condiciones oficiales de una entidad. Las dependencias originales son antiguas y no se modernizaron masivamente. La detección entre pestañas no proporciona transacciones multiusuario.
 
-4. Abrir en tu navegador la dirección indicada en la terminal (habitualmente `http://localhost:5173`).
+## Asistencia de IA y contribución personal
 
-5. Compilar para producción:
-   ```bash
-   npm run build
-   ```
-
----
-
-## 📸 Capturas de Pantalla y Enlace a Demo
-
-> *Espacios reservados para añadir los enlaces finales tras la publicación:*
-
-- **Demo interactiva:** `[Ver demostración en línea](https://<TU_USUARIO>.github.io/impulsa/)` *(Reemplazar con el enlace de GitHub Pages o Vercel)*
-- **Captura 1 — Pantalla "Mi día":** `![Mi día - Impulsa](docs/screenshots/mi-dia.png)` *(Colocar imagen en `docs/screenshots/mi-dia.png`)*
-- **Captura 2 — Detalle del Contacto:** `![Detalle del Contacto](docs/screenshots/detalle-contacto.png)` *(Colocar imagen en `docs/screenshots/detalle-contacto.png`)*
-- **Captura 3 — Directorio de Contactos:** `![Directorio de Contactos](docs/screenshots/contactos-tabla.png)` *(Colocar imagen en `docs/screenshots/contactos-tabla.png`)*
-- **Captura 4 — Tablero de Oportunidades:** `![Tablero de Oportunidades](docs/screenshots/oportunidades.png)` *(Colocar imagen en `docs/screenshots/oportunidades.png`)*
+Codex asistió en la inspección, implementación, propuesta visual, pruebas técnicas y documentación inicial a partir del encargo. Las comprobaciones técnicas no validan la usabilidad ni demuestran mejoras de negocio. La diseñadora debe revisar el caso antes de presentarlo y completar su contribución personal en [usuario-y-supuestos.md](docs/usuario-y-supuestos.md) y [resultados-y-mejoras.md](docs/resultados-y-mejoras.md).

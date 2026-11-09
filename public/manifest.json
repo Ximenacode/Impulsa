@@ -1,0 +1,10 @@
+{
+  "short_name": "Impulsa",
+  "name": "Impulsa · Seguimiento comercial financiero",
+  "lang": "es-PE",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#EEEDE9",
+  "background_color": "#EEEDE9"
+}

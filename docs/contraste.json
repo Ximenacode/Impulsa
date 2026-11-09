@@ -1,0 +1,94 @@
+{
+  "method": "Luminancia relativa sRGB; texto 4.5:1 y elementos gráficos/foco 3:1",
+  "results": [
+    {
+      "label": "Texto principal / superficie",
+      "foreground": "#272925",
+      "background": "#ffffff",
+      "ratio": 14.68,
+      "minimum": 4.5,
+      "passed": true
+    },
+    {
+      "label": "Texto secundario / fondo",
+      "foreground": "#666960",
+      "background": "#eeede9",
+      "ratio": 4.77,
+      "minimum": 4.5,
+      "passed": true
+    },
+    {
+      "label": "Texto secundario / superficie",
+      "foreground": "#666960",
+      "background": "#ffffff",
+      "ratio": 5.59,
+      "minimum": 4.5,
+      "passed": true
+    },
+    {
+      "label": "Texto de acción / carbón",
+      "foreground": "#ffffff",
+      "background": "#292d29",
+      "ratio": 13.98,
+      "minimum": 4.5,
+      "passed": true
+    },
+    {
+      "label": "Texto de acción hover / carbón suave",
+      "foreground": "#ffffff",
+      "background": "#41483f",
+      "ratio": 9.44,
+      "minimum": 4.5,
+      "passed": true
+    },
+    {
+      "label": "Texto de navegación activa / carbón",
+      "foreground": "#ffffff",
+      "background": "#272925",
+      "ratio": 14.68,
+      "minimum": 4.5,
+      "passed": true
+    },
+    {
+      "label": "Texto activo / salvia suave",
+      "foreground": "#496343",
+      "background": "#e5ede2",
+      "ratio": 5.57,
+      "minimum": 4.5,
+      "passed": true
+    },
+    {
+      "label": "Error / fondo de error",
+      "foreground": "#a03b42",
+      "background": "#f9e9ea",
+      "ratio": 5.59,
+      "minimum": 4.5,
+      "passed": true
+    },
+    {
+      "label": "Foco / fondo",
+      "foreground": "#496343",
+      "background": "#eeede9",
+      "ratio": 5.69,
+      "minimum": 3,
+      "passed": true
+    },
+    {
+      "label": "Borde de campo / superficie",
+      "foreground": "#868b80",
+      "background": "#ffffff",
+      "ratio": 3.49,
+      "minimum": 3,
+      "passed": true
+    },
+    {
+      "label": "Barras / superficie",
+      "foreground": "#778d70",
+      "background": "#ffffff",
+      "ratio": 3.6,
+      "minimum": 3,
+      "passed": true
+    }
+  ],
+  "passed": true
+}
